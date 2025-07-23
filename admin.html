@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fx-Book Admin</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBHcbcRZ98WOHEQu9t2qnjLHP9Wvz_ggPs",
+      authDomain: "aleixobook.firebaseapp.com",
+      projectId: "aleixobook",
+      storageBucket: "aleixobook.appspot.com",
+      messagingSenderId: "989202118697",
+      appId: "1:989202118697:web:508c40a7acfbbf80dcc438",
+      measurementId: "G-SXD8VPN6HK"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const form = document.getElementById("uploadForm");
+    const livrosList = document.getElementById("livrosList");
+
+    let editId = null;
+
+    async function carregarLivros() {
+      livrosList.innerHTML = "";
+      const categorias = ["featured", "new", "new2"];
+      for (const categoria of categorias) {
+        const querySnapshot = await getDocs(collection(db, `livros-${categoria}`));
+        querySnapshot.forEach((docSnap) => {
+          const data = docSnap.data();
+          const card = document.createElement("div");
+          card.className = "box";
+          card.innerHTML = `
+            <article class="media">
+              <figure class="media-left">
+                <p class="image is-64x64">
+                  <img src="${data.capa}" alt="Capa">
+                </p>
+              </figure>
+              <div class="media-content">
+                <div class="content">
+                  <p>
+                    <strong>${data.titulo}</strong> <small>${data.preco}</small> <br />
+                    ${data.descricao}<br />
+                    ⭐ ${data.estrelas}
+                  </p>
+                  <a href="${data.url}" class="button is-small is-link" target="_blank">Comprar</a>
+                </div>
+              </div>
+              <div class="media-right">
+                <button class="button is-warning is-small" onclick="editarLivro('${categoria}', '${docSnap.id}', ${JSON.stringify(data).replace(/"/g, '&quot;')})">Editar</button>
+                <button class="button is-danger is-small" onclick="excluirLivro('${categoria}', '${docSnap.id}')">Excluir</button>
+              </div>
+            </article>
+          `;
+          livrosList.appendChild(card);
+        });
+      }
+    }
+
+    window.editarLivro = function (categoria, id, data) {
+      editId = { categoria, id };
+      form.titulo.value = data.titulo;
+      form.descricao.value = data.descricao;
+      form.url.value = data.url;
+      form.capa.value = data.capa;
+      form.preco.value = data.preco;
+      form.estrelas.value = data.estrelas;
+      form.categoria.value = categoria;// === "featured" ? "featured" : "new";
+    };
+
+    window.excluirLivro = async function (categoria, id) {
+      if (confirm("Deseja realmente excluir este livro?")) {
+        await deleteDoc(doc(db, `livros-${categoria}`, id));
+        carregarLivros();
+      }
+    };
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const livro = {
+        titulo: form.titulo.value,
+        descricao: form.descricao.value,
+        url: form.url.value,
+        capa: form.capa.value,
+        preco: form.preco.value,
+        estrelas: form.estrelas.value,
+      };
+      const categoria = form.categoria.value;
+
+      try {
+        if (editId) {
+          await updateDoc(doc(db, `livros-${editId.categoria}`, editId.id), livro);
+          alert("📘 Livro atualizado com sucesso!");
+          editId = null;
+        } else {
+          await addDoc(collection(db, `livros-${categoria}`), livro);
+          alert("📚 Livro adicionado com sucesso!");
+        }
+        form.reset();
+        carregarLivros();
+      } catch (err) {
+        alert("Erro: " + err.message);
+      }
+    });
+
+    carregarLivros();
+  </script>
+</head>
+<body class="section">
+  <div class="container">
+    <h1 class="title has-text-centered">Painel Admin - Fx-Book</h1>
+
+    <form id="uploadForm" class="box">
+      <div class="field">
+        <label class="label">Título</label>
+        <div class="control">
+          <input class="input" id="titulo" required />
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Descrição</label>
+        <div class="control">
+          <!-- <textarea class="textarea" id="descricao" required></textarea> -->
+          <input class="input" id="descricao" required />
+
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">URL da Capa</label>
+        <div class="control">
+          <input class="input" id="capa" required />
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Preço</label>
+        <div class="control">
+          <input class="input" id="preco" required />
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Estrelas (1-5)</label>
+        <div class="control">
+          <input class="input" id="estrelas" type="number" min="1" max="5" required />
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Categoria</label>
+        <div class="control">
+          <div class="select">
+            <select id="categoria">
+              <option value="featured">Featured Books</option>
+              <option value="new">New Arrivals</option>
+              <option value="new2">New Arrivals 2</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Link de Compra</label>
+        <div class="control">
+          <input class="input" id="url" required />
+        </div>
+      </div>
+      <div class="field is-grouped">
+        <div class="control">
+          <button class="button is-primary" type="submit">Salvar Livro</button>
+        </div>
+        <div class="control">
+          <button class="button is-light" type="reset">Limpar</button>
+        </div>
+      </div>
+    </form>
+
+    <div id="livrosList" class="mt-5"></div>
+  </div>
+</body>
+</html>
