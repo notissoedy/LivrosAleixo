@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nome do Livro | Fx-Book</title>
+    <meta name="description" content="Veja detalhes completos sobre o livro Nome do Livro, incluindo autor, ano, preço, formato e muito mais.">
+    <meta name="keywords" content="livro, autor, ISBN, formato, descrição, comprar, Fx-Book">
+    <meta name="author" content="Fx-Book">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+   
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+      .book-cover {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+      }
+      .price .old {
+        text-decoration: line-through;
+        color: #888;
+        margin-left: 10px;
+      }
+      .tags {
+        margin-top: 1rem;
+      }
+      .stars i {
+        color: #f5c518;
+      }
+      .description {
+        margin-top: 2rem;
+        font-size: 1.1rem;
+        line-height: 1.6;
+      }
+    </style>
+</head>
+<body>
+    
+<!-- header section starts  -->
+<header class="header">
+    <div class="header-1">
+
+        <a href="#" class="logo"> <i class="fas fa-book"></i> Fx-Book </a>
+
+        <form action="" class="search-form">
+            <input type="search" name="" placeholder="search here..." id="search-box">
+            <label for="search-box" class="fas fa-search"></label>
+        </form>
+
+        <div class="icons">
+            <div id="search-btn" class="fas fa-search"></div>
+            <a href="#" class="fas fa-heart"></a>
+            <a href="#" class="fas fa-shopping-cart"></a>
+            <div id="login-btn" class="fas fa-user"></div>
+        </div>
+
+    </div>
+
+    <div class="header-2">
+        <nav class="navbar">
+            <a href="#home">home</a>
+            <a href="#featured">featured</a>
+            <a href="#arrivals">arrivals</a>
+            <a href="#reviews">reviews</a>
+            <a href="#blogs">blogs</a>
+        </nav>
+    </div>
+
+</header>
+<!-- header section ends -->
+
+<!-- bottom navbar  -->
+<nav class="bottom-navbar">
+    <a href="#home" class="fas fa-home"></a>
+    <a href="#featured" class="fas fa-list"></a>
+    <a href="#arrivals" class="fas fa-tags"></a>
+    <a href="#reviews" class="fas fa-comments"></a>
+    <a href="#blogs" class="fas fa-blog"></a>
+</nav>
+
+<!-- login form  -->
+
+<div class="login-form-container">
+
+    <div id="close-login-btn" class="fas fa-times"></div>
+
+    <form action="">
+        <h3>sign in</h3>
+        <span>username</span>
+        <input type="email" name="" class="box" placeholder="enter your email" id="">
+        <span>password</span>
+        <input type="password" name="" class="box" placeholder="enter your password" id="">
+        <div class="checkbox">
+            <input type="checkbox" name="" id="remember-me">
+            <label for="remember-me"> remember me</label>
+        </div>
+        <input type="submit" value="sign in" class="btn">
+        <p>forget password ? <a href="#">click here</a></p>
+        <p>don't have an account ? <a href="#">create one</a></p>
+    </form>
+
+</div>
+
+<!-- home section starts  -->
+
+<section class="home" id="home">
+
+    <div class="row">
+
+        <div class="content">
+            <h3>Livros de Marketing</h3>
+            <p>35% off</p>
+            <a href="#featured" class="btn">Comprar Agora</a>
+        </div>
+
+        <div class="swiper books-slider">
+            <div class="swiper-wrapper" id="imgcapa">
+                <a href="#" class="swiper-slide"><img src="image/book4.jpg" alt=""></a>
+                <a href="#" class="swiper-slide"><img src="image/book-2.jpg" alt=""></a>
+                <a href="#" class="swiper-slide"><img src="image/book3.jpg" alt=""></a>
+                <a href="#" class="swiper-slide"><img src="image/book8.jpg" alt=""></a>
+                <a href="#" class="swiper-slide"><img src="image/book5.jpg" alt=""></a>
+                <a href="#" class="swiper-slide"><img src="image/book-6.jpg" alt=""></a>
+            </div>
+            <img src="image/stand.png" class="stand" alt="">
+        </div>
+
+    </div>
+
+</section>
+
+<!-- home section ense  -->
+
+<!-- icons section starts  -->
+
+<section class="icons-container">
+
+    <div class="icons">
+        <i class="fas fa-shipping-fast"></i>
+        <div class="content">
+            <h3>Entrega grates</h3>
+            <p>order over $100</p>
+        </div>
+    </div>
+
+    <div class="icons">
+        <i class="fas fa-lock"></i>
+        <div class="content">
+            <h3>Pagamento Seguro</h3>
+            <p>100 Pagamento Seguro</p>
+        </div>
+    </div>
+
+    <div class="icons">
+        <i class="fas fa-redo-alt"></i>
+        <div class="content">
+            <h3>Devolucao facel</h3>
+            <p>10 days returns</p>
+        </div>
+    </div>
+
+    <div class="icons">
+        <i class="fas fa-headset"></i>
+        <div class="content">
+            <h3>24/7 support</h3>
+            <p>Lige a qualquer hora</p>
+        </div>
+    </div>
+
+</section>
+
+<!-- icons section ends -->
+
+<!-- featured section starts  -->
+
+<section class="featured" id="featured">
+
+    <h1 class="heading"> <span>Detalhes Do livro</span> </h1>
+
+
+    <section class="section">
+      <div class=" book-details header">
+        <div class="columns is-variable is-12 is-flex-direction-column-mobile">
+          <!-- Capa -->
+          <div class="column is-4">
+            <figure class="image is-3by4">
+              <img id="livroCapa" class="book-cover" src="https://via.placeholder.com/300x400" alt="Capa do livro">
+            </figure>
+          </div>
+  
+          <!-- Detalhes -->
+          <div class="column is-3">
+            <h1 class="title" id="livroTitulo">Título do Livro</h1>
+            <div class="star-rating mb-3">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star-half-alt"></i>
+              <i class="far fa-star"></i>
+            </div>
+  
+            <p><strong><i class="fas fa-user"></i> Autor:</strong> <span id="book-author">Desconhecido</span></p>
+            <p><strong><i class="fas fa-building"></i> Publisher:</strong> <span id="book-publisher">Editora Exemplo</span></p>
+            <p><strong><i class="fas fa-calendar-alt"></i> Ano:</strong> <span id="book-year">2023</span></p>
+            <p><strong><i class="fas fa-book"></i> Formato:</strong> <span id="book-format">Físico</span></p>
+            <p><strong><i class="fas fa-language"></i> Idioma:</strong> <span id="book-lang">Português</span></p>
+            <p><strong><i class="fas fa-barcode"></i> ISBN:</strong> <span id="book-isbn">123-456-789</span></p>
+  
+            <div class="mt-4">
+              <p class="is-size-4 has-text-weight-semibold has-text-danger">$19.99 <span class="is-size-5 has-text-grey-light has-text-line-through ml-2">$29.99</span></p>
+            </div>
+  
+            <div class="mt-3">
+              <strong><i class="fas fa-tags"></i> Tags:</strong>
+              <div class="tags">
+                <span class="tag is-info">Marketing</span>
+                <span class="tag is-success">Negócios</span>
+                <span class="tag is-warning">Vendas</span>
+              </div>
+            </div>
+  
+            <button class="button is-primary mt-4"><i class="fas fa-cart-plus mr-2"></i> Comprar Agora</button>
+          </div>
+  
+          <div class=" column is-5 description ">
+            <h2 class="title is-4">Descrição do Livro</h2>
+            <p id="livroDescricao">
+              Este livro aborda estratégias modernas de marketing digital com uma abordagem prática e acessível. Ideal para iniciantes e profissionais que desejam atualizar seus conhecimentos. Com estudos de caso e dicas aplicáveis ao mercado moçambicano e global.
+            </p>
+          </div>
+        </div>
+        </div>
+      </div>
+    </section>
+        
+    <script type="module">
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+            import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        
+            const firebaseConfig = {
+              apiKey: "AIzaSyBHcbcRZ98WOHEQu9t2qnjLHP9Wvz_ggPs",
+              authDomain: "aleixobook.firebaseapp.com",
+              projectId: "aleixobook",
+              storageBucket: "aleixobook.firebasestorage.app",
+              messagingSenderId: "989202118697",
+              appId: "1:989202118697:web:508c40a7acfbbf80dcc438",
+              measurementId: "G-SXD8VPN6HK"
+            };
+        
+            const app = initializeApp(firebaseConfig);
+            const db = getFirestore(app);
+        
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get("id");
+            const categoria = params.get("categoria");
+        
+            if (!id || !categoria) {
+              alert("Livro não encontrado.");
+            } else {
+              const docRef = doc(db, `livros-${categoria}`, id);
+              getDoc(docRef).then((docSnap) => {
+                if (docSnap.exists()) {
+                  const livro = docSnap.data();
+                  document.getElementById("livroCapa").src = livro.capa;
+                  document.getElementById("livroTitulo").textContent = livro.titulo;
+                  document.getElementById("livroDescricao").textContent = livro.descricao;
+                  document.getElementById("livroUrl").href = livro.url;
+                } else {
+                  alert("Livro não encontrado.");
+                }
+              }).catch((error) => {
+                console.error("Erro ao buscar livro:", error);
+                alert("Erro ao carregar livro.");
+              });
+            }
+    </script>
+
+    
+</section>
+
+
+<!-- footer section starts  -->
+
+<section class="footer">
+
+    <div class="box-container">
+
+        <div class="box">
+            <h3>our locations</h3>
+            <a href="#"> <i class="fas fa-map-marker-alt"></i> Mozambique </a>
+            <a href="#"> <i class="fas fa-map-marker-alt"></i> USA </a>
+            <a href="#"> <i class="fas fa-map-marker-alt"></i> russia </a>
+            <a href="#"> <i class="fas fa-map-marker-alt"></i> england </a>
+            <a href="#"> <i class="fas fa-map-marker-alt"></i> japan </a>
+            <a href="#"> <i class="fas fa-map-marker-alt"></i> france </a>
+        </div>
+
+        <div class="box">
+            <h3>quick links</h3>
+            <a href="#home"> <i class="fas fa-arrow-right"></i> home </a>
+            <a href="#featured"> <i class="fas fa-arrow-right"></i> destaque </a>
+            <a href="#arrivals"> <i class="fas fa-arrow-right"></i> arrivals </a>
+            <a href="#reviews"> <i class="fas fa-arrow-right"></i> reviews </a>
+            <a href="#blogs"> <i class="fas fa-arrow-right"></i> blogs </a>
+        </div>
+
+        <div class="box">
+            <h3>extra links</h3>
+            <a href="#"> <i class="fas fa-arrow-right"></i> Perfil </a>
+            <a href="#"> <i class="fas fa-arrow-right"></i> Encomendados </a>
+            <a href="#"> <i class="fas fa-arrow-right"></i> Politica de privacidade </a>
+            <a href="#"> <i class="fas fa-arrow-right"></i> Metodos de pagamentos </a>
+            <a href="#"> <i class="fas fa-arrow-right"></i> Nossos Servicos </a>
+        </div>
+
+        <div class="box">
+            <h3>contactos</h3>
+            <!-- <a href="#"> <i class="fas fa-phone"></i> +123-456-7890 </a> -->
+            <a href="#"> <i class="fas fa-phone"></i> +258 848373303 </a>
+            <a href="#"> <i class="fas fa-envelope"></i> aleixoaleixoalfredo9@gmail.com </a>
+            <img src="image/worldmap.png" class="map" alt="">
+        </div>
+        
+    </div>
+
+    <div class="share">
+        <a href="https://www.facebook.com/profile.php?id=100006540690109"target="_blank" class="fab fa-facebook-f"></a>
+        <a href="https://github.com/AhmedGamal710" target="_blank" class="fab fa-github"></a>
+        <a href="https://www.instagram.com/ahmed_gamal710/" target="_blank"class="fab fa-instagram"></a>
+        <a href="https://www.linkedin.com/in/ahmed-gamal-199a161a4/"target="_blank" class="fab fa-linkedin"></a>
+        <a href="https://wa.me/qr/AAMR4RL5B7MRL1" target="_blank" class="fab fa-whatsapp"></a>
+    </div>
+
+    <div class="credit"> created by <span>Notisso</span></div>
+
+</section>
+
+<!-- footer section ends -->
+
+<!-- loader  -->
+
+<div class="loader-container">
+    <img src="image/loader-img.gif" alt="">
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
+
+<!-- custom js file link  -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBHcbcRZ98WOHEQu9t2qnjLHP9Wvz_ggPs",
+      authDomain: "aleixobook.firebaseapp.com",
+      projectId: "aleixobook",
+      storageBucket: "aleixobook.firebasestorage.app",
+      messagingSenderId: "989202118697",
+      appId: "1:989202118697:web:508c40a7acfbbf80dcc438"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const renderBooks = (containerId, books) => {
+      const container = document.getElementById(containerId);
+      container.innerHTML = "";
+      books.forEach(doc => {
+        const data = doc.data();
+        const slide = document.createElement("a");
+        slide.className = "swiper-slide box";
+        slide.href=`livro.html?id=${doc.id}&categoria=new`;
+        slide.target="_blank";
+        slide.innerHTML = `
+                <div class="image">
+                    <img src="${data.capa}" alt="${data.titulo}">
+                </div>
+                <div class="content">
+                    <h3>${data.titulo}</h3>
+                    <div class="price"> ${data.preco} <span> ${data.preco}</span></div>
+                    <div class="stars">
+                    
+                        ${"<i class='fas fa-star'></i>".repeat(data.estrelas || 0)}
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+        `;
+      
+        container.appendChild(slide);
+      });
+    };
+
+    
+
+    const renderBooks2 = (containerId, books) => {
+      const container = document.getElementById(containerId);
+      container.innerHTML = "";
+      books.forEach(doc => {
+        const data = doc.data();
+        const slide = document.createElement("div");
+        slide.className = "swiper-slide box";
+        slide.innerHTML = `
+
+               <div class="icons">
+                    <a href="#" class="fas fa-search"></a>
+                    <a href="#" class="fas fa-heart"></a>
+                    <a href="livro.html?id=${doc.id}&categoria=featured" class="fas fa-eye"></a>
+                </div>
+                <div class="image">
+                 <img src="${data.capa}" alt="${data.titulo}">
+                </div>
+                <div class="content">
+                    <h3>${data.titulo}</h3>
+                    <div class="price"> ${data.preco - 4} <span> ${data.preco}</span></div>
+                    <a href="${data.url}" class="btn">Comprar</a>
+                </div>
+        `;
+      
+        container.appendChild(slide);
+      });
+    };
+
+    const renderBooks3 = (containerId, books) => {
+      const container = document.getElementById(containerId);
+      container.innerHTML = "";
+      books.forEach(doc => {
+        const data = doc.data();
+        const slide = document.createElement("a");
+        slide.className = "swiper-slide";
+        slide.href=`livro.html?id=${doc.id}&categoria=new2`;
+        slide.innerHTML = `
+                 <img src="${data.capa}" alt="${data.titulo}">
+        `;
+      
+        container.appendChild(slide);
+      });
+    };
+
+    async function carregarLivros() {
+      const [featuredSnap, newSnap, new2Snap] = await Promise.all([
+        getDocs(collection(db, "livros-featured")),
+        getDocs(collection(db, "livros-new")),
+        getDocs(collection(db, "livros-new2"))
+      ]);
+      renderBooks2("featured-books",featuredSnap.docs);
+      renderBooks("new-books", newSnap.docs );
+      renderBooks("new2-books", new2Snap.docs);
+      renderBooks3("imgcapa", new2Snap.docs);
+      setTimeout(() => {
+    // featuredSwiper.update();
+    // arrivalsSwiper.update();
+  }, 100);
+
+  initSwipers();
+    }
+
+    carregarLivros();
+  </script>
+
+<script src="js/script.js"></script>
+
+</body>
+</html>

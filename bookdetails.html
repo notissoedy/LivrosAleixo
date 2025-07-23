@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nome do Livro | Fx-Book</title>
+  <meta name="description" content="Veja detalhes completos sobre o livro Nome do Livro, incluindo autor, ano, preço, formato e muito mais.">
+  <meta name="keywords" content="livro, autor, ISBN, formato, descrição, comprar, Fx-Book">
+  <meta name="author" content="Fx-Book">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    .book-cover {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+    .price .old {
+      text-decoration: line-through;
+      color: #888;
+      margin-left: 10px;
+    }
+    .tags {
+      margin-top: 1rem;
+    }
+    .stars i {
+      color: #f5c518;
+    }
+    .description {
+      margin-top: 2rem;
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+<section class="section">
+  <div class="container">
+    <h1 class="title is-3">Nome do Livro</h1>
+    <div class="columns is-variable is-8">
+      <div class="column is-5">
+        <figure class="image">
+          <img class="book-cover" src="image/capa.jpg" alt="Capa do livro Nome do Livro">
+        </figure>
+      </div>
+      <div class="column is-7">
+        <div class="content">
+          <p><strong>Autor:</strong> João Exemplo</p>
+          <p><strong>Editora:</strong> Exemplo Publisher</p>
+          <p><strong>Ano:</strong> 2023</p>
+          <p><strong>Idioma:</strong> Português</p>
+          <p><strong>Formato:</strong> Capa dura</p>
+          <p><strong>ISBN:</strong> 978-3-16-148410-0</p>
+          <p><strong>Edição:</strong> 2ª</p>
+          <p class="stars">
+            <strong>Avaliação:</strong>
+            <i class="fas fa-star"></i><i class="fas fa-star"></i>
+            <i class="fas fa-star"></i><i class="fas fa-star"></i>
+            <i class="fas fa-star-half-alt"></i>
+          </p>
+          <p class="price">
+            <strong>Preço:</strong> <span class="has-text-success">$19.99</span>
+            <span class="old">$24.99</span>
+          </p>
+          <div class="tags are-medium">
+            <span class="tag is-info">Marketing</span>
+            <span class="tag is-warning">Negócios</span>
+            <span class="tag is-primary">Empreendedorismo</span>
+          </div>
+          <br>
+          <a href="#" class="button is-primary is-medium">
+            <i class="fas fa-shopping-cart mr-2"></i> Comprar Agora
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="description">
+      <h2 class="title is-4">Descrição do Livro</h2>
+      <p>
+        Este livro aborda estratégias modernas de marketing digital com uma abordagem prática e acessível. Ideal para iniciantes e profissionais que desejam atualizar seus conhecimentos. Com estudos de caso e dicas aplicáveis ao mercado moçambicano e global.
+      </p>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

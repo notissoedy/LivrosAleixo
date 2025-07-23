@@ -1,100 +1,138 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Fx-Book | Detalhes do Livro</title>
-  <link href="style.css" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nome do Livro | Fx-Book</title>
+  <meta name="description" content="Veja detalhes completos sobre o livro Nome do Livro, incluindo autor, ano, preço, formato e muito mais.">
+  <meta name="keywords" content="livro, autor, ISBN, formato, descrição, comprar, Fx-Book">
+  <meta name="author" content="Fx-Book">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      background: #f9f9f9;
+    .book-details {
+      margin-top: 3rem;
     }
-    .livro-container {
-      max-width: 800px;
-      margin: auto;
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
-    .livro-container img {
+    .book-cover {
       max-width: 100%;
-      height: auto;
-    }
-    .livro-detalhes {
-      padding: 20px;
-    }
-    .livro-detalhes h2 {
-      margin-top: 0;
-    }
-    .btn-comprar {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 10px 20px;
-      background: #007BFF;
-      color: white;
-      text-decoration: none;
       border-radius: 8px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
     }
-    .btn-comprar:hover {
-      background: #0056b3;
+    .tags span {
+      margin: 0.25rem;
+    }
+    .star-rating i {
+      color: #f5c518;
+    }
+    .description {
+      margin-top: 2rem;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin: 0.25rem;
     }
   </style>
 </head>
 <body>
-  <div class="livro-container">
-    <img id="livroCapa" src="" alt="Capa do livro">
-    <div class="livro-detalhes">
-      <h2 id="livroTitulo"></h2>
-      <p id="livroDescricao"></p>
-      <a id="livroUrl" class="btn-comprar" target="_blank">Comprar / Saber mais</a>
+
+  <section class="section">
+    <div class=" book-details header">
+      <div class="columns is-variable is-12 is-flex-direction-column-mobile">
+        <!-- Capa -->
+        <div class="column is-4">
+          <figure class="image is-3by4">
+            <img id="livroCapa" class="book-cover" src="https://via.placeholder.com/300x400" alt="Capa do livro">
+          </figure>
+        </div>
+
+        <!-- Detalhes -->
+        <div class="column is-3">
+          <h1 class="title" id="livroTitulo">Título do Livro</h1>
+          <div class="star-rating mb-3">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star-half-alt"></i>
+            <i class="far fa-star"></i>
+          </div>
+
+          <p><strong><i class="fas fa-user"></i> Autor:</strong> <span id="book-author">Desconhecido</span></p>
+          <p><strong><i class="fas fa-building"></i> Publisher:</strong> <span id="book-publisher">Editora Exemplo</span></p>
+          <p><strong><i class="fas fa-calendar-alt"></i> Ano:</strong> <span id="book-year">2023</span></p>
+          <p><strong><i class="fas fa-book"></i> Formato:</strong> <span id="book-format">Físico</span></p>
+          <p><strong><i class="fas fa-language"></i> Idioma:</strong> <span id="book-lang">Português</span></p>
+          <p><strong><i class="fas fa-barcode"></i> ISBN:</strong> <span id="book-isbn">123-456-789</span></p>
+
+          <div class="mt-4">
+            <p class="is-size-4 has-text-weight-semibold has-text-danger">$19.99 <span class="is-size-5 has-text-grey-light has-text-line-through ml-2">$29.99</span></p>
+          </div>
+
+          <div class="mt-3">
+            <strong><i class="fas fa-tags"></i> Tags:</strong>
+            <div class="tags">
+              <span class="tag is-info">Marketing</span>
+              <span class="tag is-success">Negócios</span>
+              <span class="tag is-warning">Vendas</span>
+            </div>
+          </div>
+
+          <button class="button is-primary mt-4"><i class="fas fa-cart-plus mr-2"></i> Comprar Agora</button>
+        </div>
+
+        <div class=" column is-5 description ">
+          <h2 class="title is-4">Descrição do Livro</h2>
+          <p id="livroDescricao">
+            Este livro aborda estratégias modernas de marketing digital com uma abordagem prática e acessível. Ideal para iniciantes e profissionais que desejam atualizar seus conhecimentos. Com estudos de caso e dicas aplicáveis ao mercado moçambicano e global.
+          </p>
+        </div>
+      </div>
+      </div>
     </div>
-  </div>
-
+  </section>
+      
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyBHcbcRZ98WOHEQu9t2qnjLHP9Wvz_ggPs",
-      authDomain: "aleixobook.firebaseapp.com",
-      projectId: "aleixobook",
-      storageBucket: "aleixobook.firebasestorage.app",
-      messagingSenderId: "989202118697",
-      appId: "1:989202118697:web:508c40a7acfbbf80dcc438",
-      measurementId: "G-SXD8VPN6HK"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get("id");
-    const categoria = params.get("categoria");
-
-    if (!id || !categoria) {
-      alert("Livro não encontrado.");
-    } else {
-      const docRef = doc(db, `livros-${categoria}`, id);
-      getDoc(docRef).then((docSnap) => {
-        if (docSnap.exists()) {
-          const livro = docSnap.data();
-          document.getElementById("livroCapa").src = livro.capa;
-          document.getElementById("livroTitulo").textContent = livro.titulo;
-          document.getElementById("livroDescricao").textContent = livro.descricao;
-          document.getElementById("livroUrl").href = livro.url;
-        } else {
-          alert("Livro não encontrado.");
-        }
-      }).catch((error) => {
-        console.error("Erro ao buscar livro:", error);
-        alert("Erro ao carregar livro.");
-      });
-    }
+          import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+          import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+      
+          const firebaseConfig = {
+            apiKey: "AIzaSyBHcbcRZ98WOHEQu9t2qnjLHP9Wvz_ggPs",
+            authDomain: "aleixobook.firebaseapp.com",
+            projectId: "aleixobook",
+            storageBucket: "aleixobook.firebasestorage.app",
+            messagingSenderId: "989202118697",
+            appId: "1:989202118697:web:508c40a7acfbbf80dcc438",
+            measurementId: "G-SXD8VPN6HK"
+          };
+      
+          const app = initializeApp(firebaseConfig);
+          const db = getFirestore(app);
+      
+          const params = new URLSearchParams(window.location.search);
+          const id = params.get("id");
+          const categoria = params.get("categoria");
+      
+          if (!id || !categoria) {
+            alert("Livro não encontrado.");
+          } else {
+            const docRef = doc(db, `livros-${categoria}`, id);
+            getDoc(docRef).then((docSnap) => {
+              if (docSnap.exists()) {
+                const livro = docSnap.data();
+                document.getElementById("livroCapa").src = livro.capa;
+                document.getElementById("livroTitulo").textContent = livro.titulo;
+                document.getElementById("livroDescricao").textContent = livro.descricao;
+                document.getElementById("livroUrl").href = livro.url;
+              } else {
+                alert("Livro não encontrado.");
+              }
+            }).catch((error) => {
+              console.error("Erro ao buscar livro:", error);
+              alert("Erro ao carregar livro.");
+            });
+          }
   </script>
+
+  
+
+
 </body>
 </html>
