@@ -73,6 +73,16 @@
       form.preco.value = data.preco;
       form.estrelas.value = data.estrelas;
       form.categoria.value = categoria;// === "featured" ? "featured" : "new";
+
+      form.novoPreco.value=data.novoPreco;
+      form.autor.value=data.autor;
+      form.editora.value=data.editora;
+      form.ano.value =data.ano,
+      form.formato.value=data.formato,
+      form.tamanho.value = data.tamanho,
+      form.idioma.value=data.idioma,
+	    form.isbn.value=data.isbn,
+      form.tags.value=data.tags
     };
 
     window.excluirLivro = async function (categoria, id) {
@@ -91,6 +101,17 @@
         capa: form.capa.value,
         preco: form.preco.value,
         estrelas: form.estrelas.value,
+
+        novoPreco: form.novoPreco.value,
+        autor: form.autor.value,
+        editora: form.editora.value,
+        ano: form.ano.value,
+        formato: form.formato.value,
+        tamanho: form.tamanho.value,
+        idioma: form.idioma.value,
+	      isbn: form.isbn.value,
+        tags: form.tags.value
+
       };
       const categoria = form.categoria.value;
 
@@ -118,56 +139,133 @@
     <h1 class="title has-text-centered">Painel Admin - Fx-Book</h1>
 
     <form id="uploadForm" class="box">
-      <div class="field">
-        <label class="label">Título</label>
-        <div class="control">
-          <input class="input" id="titulo" required />
+      <div class="columns is-variable is-12 is-flex-direction-column-mobile">
+      <div class=" column is-4">
+        <div class="field">
+          <label class="label">Título</label>
+          <div class="control">
+            <input class="input" id="titulo" required />
+          </div>
         </div>
-      </div>
-      <div class="field">
-        <label class="label">Descrição</label>
-        <div class="control">
-          <!-- <textarea class="textarea" id="descricao" required></textarea> -->
-          <input class="input" id="descricao" required />
+        <div class="field">
+          <label class="label">Descrição</label>
+          <div class="control">
+            <!-- <textarea class="textarea" id="descricao" required></textarea> -->
+            <input class="input" id="descricao" required />
 
+          </div>
         </div>
-      </div>
-      <div class="field">
-        <label class="label">URL da Capa</label>
-        <div class="control">
-          <input class="input" id="capa" required />
+        <div class="field">
+          <label class="label">URL da Capa</label>
+          <div class="control">
+            <input class="input" id="capa" required />
+          </div>
         </div>
-      </div>
-      <div class="field">
-        <label class="label">Preço</label>
-        <div class="control">
-          <input class="input" id="preco" required />
+
+        <div class="field is-grouped">
+
+        <div class="field is-2">
+          <label class="label">Novo Preço</label>
+          <div class="control">
+            <input class="input" id="novoPreco" required />
+          </div>
         </div>
-      </div>
-      <div class="field">
-        <label class="label">Estrelas (1-5)</label>
-        <div class="control">
-          <input class="input" id="estrelas" type="number" min="1" max="5" required />
-        </div>
-      </div>
-      <div class="field">
-        <label class="label">Categoria</label>
-        <div class="control">
-          <div class="select">
-            <select id="categoria">
-              <option value="featured">Featured Books</option>
-              <option value="new">New Arrivals</option>
-              <option value="new2">New Arrivals 2</option>
-            </select>
+        <div class="field is-2">
+          <label class="label">Preço</label>
+          <div class="control">
+            <input class="input" id="preco" required />
           </div>
         </div>
       </div>
-      <div class="field">
-        <label class="label">Link de Compra</label>
-        <div class="control">
-          <input class="input" id="url" required />
+
+        <div class="field">
+          <label class="label">Estrelas (1-5)</label>
+          <div class="control">
+            <input class="input" id="estrelas" type="number" min="1" max="5" required />
+          </div>
         </div>
       </div>
+      <div class=" column is-4">
+
+        <div class="field">
+          <label class="label">Categoria</label>
+          <div class="control">
+            <div class="select">
+              <select id="categoria">
+                <option value="featured">Featured Books</option>
+                <option value="new">New Arrivals</option>
+                <option value="new2">New Arrivals 2</option>
+              </select>
+            </div>
+          </div>
+        
+        </div>
+        <div class="field">
+          <label class="label">Link de Compra</label>
+          <div class="control">
+            <input class="input" id="url" required />
+          </div>
+        </div>
+        <!-- new field -->
+        <div class="field">
+          <label class="label">Autor</label>
+          <div class="control">
+            <input class="input" id="autor" required />
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Editora</label>
+          <div class="control">
+            <input class="input" id="editora" required />
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Ano</label>
+          <div class="control">
+            <input class="input" id="ano" required />
+          </div>
+        </div>
+      </div>
+
+      <div class=" column is-4">
+          
+          <div class="field">
+            <label class="label">Formato</label>
+            <div class="control">
+              <input class="input" id="formato" required />
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Tamanho</label>
+            <div class="control">
+              <input class="input" id="tamanho" required />
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Idioma</label>
+            <div class="control">
+              <input class="input" id="idioma" required />
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">ISBN</label>
+            <div class="control">
+              <input class="input" id="isbn" required />
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Tags</label>
+            <div class="control">
+              <input class="input" id="tags" required />
+            </div>
+          </div>
+      </div>
+    </div>
+      <!-- bottons -->
       <div class="field is-grouped">
         <div class="control">
           <button class="button is-primary" type="submit">Salvar Livro</button>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fx-Book Admin</title>
+  <!-- <link rel="stylesheet" href="style.css"> -->
+
+</head>
+<body class="bg-gray-100 text-gray-900">
+  <div class="container mx-auto p-4">
+    <h1 class="text-2xl font-bold mb-4">Painel Admin - Fx-Book</h1>
+
+    <!-- Formulário de Upload -->
+    <form id="uploadForm" class="bg-white p-4 rounded shadow-md">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <input type="text" id="titulo" placeholder="Título do Livro" class="p-2 border rounded" required>
+        <input type="text" id="descricao" placeholder="Descrição" class="p-2 border rounded" required>
+        <input type="url" id="url" placeholder="Link de compra ou leitura" class="p-2 border rounded" required>
+        <input type="url" id="capa" placeholder="URL da imagem da capa" class="p-2 border rounded" required>
+        <input type="number" id="preco" placeholder="Preço (ex: 500)" class="p-2 border rounded" required>
+        <select id="categoria" class="p-2 border rounded">
+          <option value="featured">Featured Books</option>
+          <option value="new">New Arrivals</option>
+        </select>
+        <input type="number" id="estrelas" placeholder="Estrelas (1-5)" min="1" max="5" class="p-2 border rounded" required>
+      </div>
+      <button type="submit" class="mt-4 px-4 py-2 bg-blue-600 text-white rounded">Adicionar Livro</button>
+    </form>
+
+    <!-- Lista de Livros -->
+    <h2 class="text-xl font-semibold mt-8 mb-4">Livros Cadastrados</h2>
+    <div id="listaLivros" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBHcbcRZ98WOHEQu9t2qnjLHP9Wvz_ggPs",
+      authDomain: "aleixobook.firebaseapp.com",
+      projectId: "aleixobook",
+      storageBucket: "aleixobook.appspot.com",
+      messagingSenderId: "989202118697",
+      appId: "1:989202118697:web:508c40a7acfbbf80dcc438"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const form = document.getElementById("uploadForm");
+    const listaLivros = document.getElementById("listaLivros");
+
+    async function carregarLivros() {
+      listaLivros.innerHTML = "";
+      const categorias = ["featured", "new"];
+      for (const cat of categorias) {
+        const querySnapshot = await getDocs(collection(db, `livros-${cat}`));
+        querySnapshot.forEach((docSnap) => {
+          const livro = docSnap.data();
+          const card = document.createElement("div");
+          card.className = "bg-white p-4 rounded shadow";
+          card.innerHTML = `
+            <img src="${livro.capa}" alt="Capa" class="w-full h-48 object-cover rounded">
+            <h3 class="text-lg font-bold mt-2">${livro.titulo}</h3>
+            <p class="text-sm">${livro.descricao}</p>
+            <p class="text-sm">Preço: ${livro.preco} MZN</p>
+            <p class="text-sm">⭐ ${livro.estrelas}</p>
+            <div class="flex gap-2 mt-2">
+              <a href="${livro.url}" target="_blank" class="text-blue-500">Comprar</a>
+              <button class="text-red-500" onclick="excluirLivro('${cat}', '${docSnap.id}')">Excluir</button>
+              <button class="text-yellow-500" onclick='editarLivro(${JSON.stringify({ ...livro, id: docSnap.id, categoria: cat })})'>Editar</button>
+            </div>
+          `;
+          listaLivros.appendChild(card);
+        });
+      }
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const novoLivro = {
+        titulo: form.titulo.value,
+        descricao: form.descricao.value,
+        url: form.url.value,
+        capa: form.capa.value,
+        preco: form.preco.value,
+        categoria: form.categoria.value,
+        estrelas: form.estrelas.value
+      };
+      try {
+        await addDoc(collection(db, `livros-${novoLivro.categoria}`), novoLivro);
+        alert("✅ Livro adicionado!");
+        form.reset();
+        carregarLivros();
+      } catch (err) {
+        alert("Erro: " + err.message);
+      }
+    });
+
+    window.excluirLivro = async (categoria, id) => {
+      if (confirm("Tem certeza que deseja excluir este livro?")) {
+        await deleteDoc(doc(db, `livros-${categoria}`, id));
+        carregarLivros();
+      }
+    }
+
+    window.editarLivro = (livro) => {
+      form.titulo.value = livro.titulo;
+      form.descricao.value = livro.descricao;
+      form.url.value = livro.url;
+      form.capa.value = livro.capa;
+      form.preco.value = livro.preco;
+      form.estrelas.value = livro.estrelas;
+      form.categoria.value = livro.categoria;
+      form.setAttribute("data-editar-id", livro.id);
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const id = form.getAttribute("data-editar-id");
+      const categoria = form.categoria.value;
+      const livro = {
+        titulo: form.titulo.value,
+        descricao: form.descricao.value,
+        url: form.url.value,
+        capa: form.capa.value,
+        preco: form.preco.value,
+        estrelas: form.estrelas.value
+      };
+      if (id) {
+        await updateDoc(doc(db, `livros-${categoria}`, id), livro);
+        alert("✅ Livro atualizado!");
+        form.removeAttribute("data-editar-id");
+      } else {
+        await addDoc(collection(db, `livros-${categoria}`), livro);
+        alert("✅ Livro adicionado!");
+      }
+      form.reset();
+      carregarLivros();
+    });
+
+    carregarLivros();
+  </script>
+</body>
+</html>
