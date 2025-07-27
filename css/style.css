@@ -284,6 +284,14 @@ section{
     cursor: pointer;
 }
 
+.login-form-container #close-signup-btn{
+    position: absolute;
+    top:1.5rem; right:2.5rem;
+    font-size: 5rem;
+    color:var(--black);
+    cursor: pointer;
+}
+
 .home{
     background: url(../image/banner-bg.jpg) no-repeat;
     background-size: cover;

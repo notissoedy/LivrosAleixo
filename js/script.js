@@ -14,6 +14,12 @@ document.querySelector('#close-login-btn').onclick = () =>{
   loginForm.classList.remove('active');
 }
 
+let signupForm =document.querySelector('.signup-form-container');
+
+document.querySelector('#close-signup-btn').onclick = () =>{
+  signupForm.classList.remove('active');
+}
+
 window.onscroll = () =>{
 
   searchForm.classList.remove('active');

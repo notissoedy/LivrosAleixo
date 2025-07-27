@@ -55,26 +55,44 @@
 </nav>
 
 <!-- login form  -->
-
 <div class="login-form-container">
-
     <div id="close-login-btn" class="fas fa-times"></div>
+  
+    <form onsubmit="login(event)">
+      <h3>Sign in</h3>
+      <span>Email</span>
+      <input id="loginEmail" type="email" class="box" placeholder="Enter your email" required>
+      <span>Password</span>
+      <input id="loginPassword" type="password" class="box" placeholder="Enter your password" required>
+      <div class="checkbox">
+        <input type="checkbox" id="remember-me">
+        <label for="remember-me">Remember me</label>
+      </div>
+      <input type="submit" value="Sign in" class="btn">
+      <p>Forget password? <a href="#" onclick="forgotPassword()">Click here</a></p>
+      <p>Don't have an account? <a href="#" onclick="showSignup()">Create one</a></p>
+    </form>
+  </div>
+  
 
-    <form action="">
-        <h3>sign in</h3>
-        <span>username</span>
-        <input type="email" name="" class="box" placeholder="enter your email" id="">
-        <span>password</span>
-        <input type="password" name="" class="box" placeholder="enter your password" id="">
+<!-- signup form  -->
+
+<div class="login-form-container signup-form-container">
+    <div id="close-signup-btn" class="fas fa-times"></div>
+
+    <form onsubmit="signup(event)">
+        <h3>sign up</h3>
+        <span>Email</span>
+        <input id="signupEmail" type="email" class="box" placeholder="enter your email" required>
+        <span>Password</span>
+        <input id="signupPassword" type="password" class="box" placeholder="enter your password" required>
         <div class="checkbox">
-            <input type="checkbox" name="" id="remember-me">
+            <input type="checkbox" id="remember-me">
             <label for="remember-me"> remember me</label>
         </div>
-        <input type="submit" value="sign in" class="btn">
-        <p>forget password ? <a href="#">click here</a></p>
-        <p>don't have an account ? <a href="#">create one</a></p>
+        <input type="submit" value="sign up" class="btn">
+        <p>have an account? <a href="#" onclick="showLogin()">login</a></p>
     </form>
-
 </div>
 
 <!-- home section starts  -->
@@ -602,7 +620,9 @@
 <!-- loader  -->
 
 <div class="loader-container">
-    <img src="image/loader-img.gif" alt="">
+    <!-- <img src="image/loader-img.gif" alt=""> -->
+    <img src="image/loader-img.jpg" alt="">
+
 </div>
 
 
@@ -626,6 +646,13 @@
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import {
+    getAuth,
+    signInWithEmailAndPassword,
+    sendPasswordResetEmail
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  import {  createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  import { doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBHcbcRZ98WOHEQu9t2qnjLHP9Wvz_ggPs",
@@ -637,6 +664,7 @@
     };
 
     const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
     const db = getFirestore(app);
     const renderBooks = (containerId, books) => {
       const container = document.getElementById(containerId);
@@ -731,6 +759,94 @@
     }
 
     carregarLivros();
+
+  
+
+// Função de cadastro
+const signup = async function (event) {
+    event.preventDefault();
+
+    const email = document.getElementById("signupEmail").value;
+    const password = document.getElementById("signupPassword").value;
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // Salvar info adicional no Firestore
+      await setDoc(doc(db, "usuarios", user.uid), {
+        email: email,
+        dataRegistro: serverTimestamp(),
+        livrosComprados: [],
+        favoritos: []
+      });
+
+      alert("Cadastro realizado com sucesso!");
+      // Redirecionar ou fechar formulário
+    } catch (error) {
+      console.error("Erro no cadastro:", error.message);
+      alert("Erro: " + error.message);
+    }
+  };
+
+  window.signup = signup;
+
+     // 🔐 Função de login
+     const login = async (event) => {
+    event.preventDefault(); // evita recarregar página
+
+    const email = document.getElementById("loginEmail").value.trim();
+    const password = document.getElementById("loginPassword").value;
+
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      alert("Login realizado com sucesso!");
+      // Redirecionar ou esconder login-form
+      document.querySelector(".login-form-container").classList.remove("active");
+
+    } catch (error) {
+      console.error(error);
+      alert("Erro no login: " + error.message);
+    }
+  };
+  window.login = login;
+  // 🔐 Recuperação de senha
+  const forgotPassword = async () => {
+    const email = prompt("Digite seu email para recuperar a senha:");
+    if (!email) return;
+
+    try {
+      await sendPasswordResetEmail(auth, email);
+      alert("Link de recuperação enviado para seu email!");
+    } catch (error) {
+      alert("Erro ao enviar email: " + error.message);
+    }
+  };
+
+  window.forgotPassword = forgotPassword;
+  // Exibe o formulário de cadastro
+  const showSignup = () => {
+    document.querySelector('.login-form-container').classList.remove('active');
+    document.querySelector('.signup-form-container').classList.add('active');
+
+
+  };
+
+  window.showSignup= showSignup;
+
+  // Exibe o formulário de cadastro
+  const showLogin = () => {
+    document.querySelector('.login-form-container').classList.add('active');
+    document.querySelector('.signup-form-container').classList.remove('active');
+
+  };
+
+  window.showLogin= showLogin;
+
+
+
   </script>
 
 <script src="js/script.js"></script>

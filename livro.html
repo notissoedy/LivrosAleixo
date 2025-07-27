@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nome do Livro | Fx-Book</title>
+  <title id="livroTitulo1" >Nome do Livro | Fx-Book</title>
   <meta name="description" content="Veja detalhes completos sobre o livro Nome do Livro, incluindo autor, ano, preço, formato e muito mais.">
   <meta name="keywords" content="livro, autor, ISBN, formato, descrição, comprar, Fx-Book">
   <meta name="author" content="Fx-Book">
@@ -47,7 +47,7 @@
         <!-- Detalhes -->
         <div class="column is-3">
           <h1 class="title" id="livroTitulo">Título do Livro</h1>
-          <div class="star-rating mb-3">
+          <div id="star" class="star-rating mb-3">
             <i class="fas fa-star"></i>
             <i class="fas fa-star"></i>
             <i class="fas fa-star"></i>
@@ -63,16 +63,15 @@
           <p><strong><i class="fas fa-language"></i> Idioma:</strong> <span id="idioma">Português</span></p>
           <p><strong><i class="fas fa-barcode"></i> ISBN:</strong> <span id="isbn">123-456-789</span></p>
 
-          <div class="mt-4">
+          <div  id="precoContainer" class="mt-4">
             <p id="preco" class="is-size-4 has-text-weight-semibold has-text-danger">$19.99 <span class="is-size-5 has-text-grey-light has-text-line-through ml-2">$29.99</span></p>
           </div>
 
           <div class="mt-3">
             <strong><i class="fas fa-tags"></i> Tags:</strong>
             <div id="tags" class="tags">
-              <span class="tag is-info">Marketing</span>
-              <span class="tag is-success">Negócios</span>
-              <span class="tag is-warning">Vendas</span>
+            
+        
             </div>
           </div>
 
@@ -120,21 +119,47 @@
                 const livro = docSnap.data();
                 document.getElementById("livroCapa").src = livro.capa;
                 document.getElementById("livroTitulo").textContent = livro.titulo;
+                document.getElementById("livroTitulo1").textContent = livro.titulo;
+
                 document.getElementById("livroDescricao").textContent = livro.descricao;
                 document.getElementById("livroUrl").href = livro.url;
 
                 document.getElementById("autor").textContent = livro.autor;
-                document.getElementById("editora").textContent = livro.descricao;
+                document.getElementById("editora").textContent = livro.editora;
                 document.getElementById("ano").textContent = livro.ano;
                 document.getElementById("formato").textContent = livro.formato;
                 document.getElementById("tamanho").textContent = livro.tamanho;
                 document.getElementById("idioma").textContent = livro.idioma;
                 document.getElementById("isbn").textContent = livro.isbn;
 
-               // document.getElementById("isbn").textContent = livro.isbn;
+                const precoContainer = document.getElementById("precoContainer");
 
+                precoContainer.innerHTML = "";
+                const preco = document.createElement("p");
+                preco.className = "is-size-4 has-text-weight-semibold has-text-danger";
+                preco.innerHTML = `${livro.preco}MT <span class="is-size-5 has-text-grey-light has-text-line-through ml-2">${livro.novoPreco}MT</span>`;
+                precoContainer.appendChild(preco);
 
+           
 
+            const tags = livro.tags;
+            const tagArray = tags.split(',');
+
+            const colors = ["is-info", "is-success", "is-warning", "is-primary", "is-danger"];
+            const tagsContainer = document.getElementById("tags");
+
+            tagArray.forEach((tag, index) => {
+              const span = document.createElement("span");
+              span.className = `tag ${colors[index % colors.length]}`;
+              span.textContent = tag.trim();
+              tagsContainer.appendChild(span);
+            });
+
+         
+
+              const star = document.getElementById("star");
+              star.innerHTML = ` ${"<i class='fas fa-star'></i>".repeat(livro.estrelas || 0)}
+                                <i class="fas fa-star-half-alt"></i>`;
               } else {
                 alert("Livro não encontrado.");
               }
