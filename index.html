@@ -25,7 +25,7 @@
 
         <div class="icons">
             <div id="search-btn" class="fas fa-search"></div>
-            <a href="#" class="fas fa-heart"></a>
+            <a href="favoritos.html" class="fas fa-heart"></a>
             <a href="#" class="fas fa-shopping-cart"></a>
             <div id="login-btn" class="fas fa-user"></div>
         </div>
@@ -645,14 +645,16 @@
 <!-- custom js file link  -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    // import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getFirestore, collection, getDocs, doc, getDoc, updateDoc, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import {  onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
     import {
     getAuth,
     signInWithEmailAndPassword,
     sendPasswordResetEmail
   } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
   import {  createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-  import { doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  import { setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBHcbcRZ98WOHEQu9t2qnjLHP9Wvz_ggPs",
@@ -696,33 +698,36 @@
 
     
 
-    const renderBooks2 = (containerId, books) => {
-      const container = document.getElementById(containerId);
-      container.innerHTML = "";
-      books.forEach(doc => {
-        const data = doc.data();
-        const slide = document.createElement("div");
-        slide.className = "swiper-slide box";
-        slide.innerHTML = `
+    function renderBooks2(containerId, books, userSnap) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = "";
+  const favoritos = userSnap?.data()?.favoritos || [];
 
-               <div class="icons">
-                    <a href="#" class="fas fa-search"></a>
-                    <a href="#" class="fas fa-heart"></a>
-                    <a href="livro.html?id=${doc.id}&categoria=featured" class="fas fa-eye"></a>
-                </div>
-                <div class="image">
-                 <img src="${data.capa}" alt="${data.titulo}">
-                </div>
-                <div class="content">
-                    <h3>${data.titulo}</h3>
-                    <div class="price"> ${data.preco - 4} <span> ${data.preco}</span></div>
-                    <a href="${data.url}" class="btn">Comprar</a>
-                </div>
-        `;
-      
-        container.appendChild(slide);
-      });
-    };
+  books.forEach(doc => {
+    const data = doc.data();
+    const isFavorito = favoritos.includes(doc.id);
+    const heartClass = isFavorito ? "has-text-danger" : "";
+
+    const slide = document.createElement("div");
+    slide.className = "swiper-slide box";
+    slide.innerHTML = `
+      <div class="icons">
+        <a href="#" class="fas fa-search"></a>
+        <a href="#" class="fas fa-heart ${heartClass}" onclick="toggleFavorite('${doc.id}', 'featured', this)"></a>
+        <a href="livro.html?id=${doc.id}&categoria=featured" class="fas fa-eye"></a>
+      </div>
+      <div class="image">
+        <img src="${data.capa}" alt="${data.titulo}">
+      </div>
+      <div class="content">
+        <h3>${data.titulo}</h3>
+        <div class="price"> ${data.preco - 4} <span> ${data.preco}</span></div>
+        <a href="${data.url}" class="btn">Comprar</a>
+      </div>
+    `;
+    container.appendChild(slide);
+  });
+}
 
     const renderBooks3 = (containerId, books) => {
       const container = document.getElementById(containerId);
@@ -741,22 +746,29 @@
     };
 
     async function carregarLivros() {
-      const [featuredSnap, newSnap, new2Snap] = await Promise.all([
-        getDocs(collection(db, "livros-featured")),
-        getDocs(collection(db, "livros-new")),
-        getDocs(collection(db, "livros-new2"))
-      ]);
-      renderBooks2("featured-books",featuredSnap.docs);
-      renderBooks("new-books", newSnap.docs );
-      renderBooks("new2-books", new2Snap.docs);
-      renderBooks3("imgcapa", new2Snap.docs);
-      setTimeout(() => {
-    // featuredSwiper.update();
-    // arrivalsSwiper.update();
-  }, 100);
+  const auth = getAuth();
+  onAuthStateChanged(auth, async (user) => {
+    let userSnap = null;
 
-  initSwipers();
+    if (user) {
+      const docRef = doc(db, "usuarios", user.uid);
+      const snapshot = await getDoc(docRef);
+      userSnap = snapshot.exists() ? snapshot : null;
     }
+
+    const [featuredSnap, newSnap, new2Snap] = await Promise.all([
+      getDocs(collection(db, "livros-featured")),
+      getDocs(collection(db, "livros-new")),
+      getDocs(collection(db, "livros-new2"))
+    ]);
+
+    renderBooks2("featured-books", featuredSnap.docs, userSnap);
+    renderBooks("new-books", newSnap.docs);
+    renderBooks("new2-books", new2Snap.docs);
+    renderBooks3("imgcapa", new2Snap.docs);
+    initSwipers();
+  });
+}
 
     carregarLivros();
 
@@ -845,6 +857,54 @@ const signup = async function (event) {
 
   window.showLogin= showLogin;
 
+// Função para curtir/descurtir
+async function toggleFavorite(livroId, categoria, element) {
+  const user = auth.currentUser;
+  if (!user) {
+    alert("Você precisa estar logado para favoritar.");
+    showLogin(); // exibe formulário de login
+    return;
+  }
+
+  const userRef = doc(db, "usuarios", user.uid);
+  const livroRef = doc(db, `livros-${categoria}`, livroId);
+
+  try {
+    const userSnap = await getDoc(userRef);
+    const livroSnap = await getDoc(livroRef);
+
+    if (!livroSnap.exists()) {
+      alert("Livro não encontrado.");
+      return;
+    }
+
+    const favoritos = userSnap.exists() && userSnap.data().favoritos || [];
+    const jaFavoritado = favoritos.some(fav => fav.id === livroId && fav.categoria === categoria);
+
+    console.log(element);
+  
+
+    if (jaFavoritado) {
+      await updateDoc(userRef, {
+        favoritos: arrayRemove({ id: livroId, categoria })
+      });
+      alert("Removido dos favoritos.");
+      element.classList.replace("fas", "far"); // ícone não preenchido
+      element.title = "Adicionar aos favoritos";
+    } else {
+      await updateDoc(userRef, {
+        favoritos: arrayUnion({ id: livroId, categoria })
+      });
+      alert("Adicionado aos favoritos!");
+      element.classList.replace("far", "fas"); // ícone preenchido
+      element.title = "Remover dos favoritos";
+    }
+  } catch (err) {
+    console.error("Erro ao favoritar livro:", err);
+    alert("Erro ao atualizar favoritos.");
+  }
+}
+window.toggleFavorite = toggleFavorite;
 
 
   </script>

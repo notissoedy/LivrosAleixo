@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meus Favoritos | Fx-Book</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+  <section class="section">
+    <div class="container">
+      <h1 class="title">Meus Favoritos</h1>
+      <div id="favoritosContainer" class="columns is-multiline">
+        <!-- Livros serão carregados aqui -->
+      </div>
+    </div>
+  </section>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getFirestore, doc, getDoc, updateDoc, arrayRemove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBHcbcRZ98WOHEQu9t2qnjLHP9Wvz_ggPs",
+      authDomain: "aleixobook.firebaseapp.com",
+      projectId: "aleixobook",
+      storageBucket: "aleixobook.firebasestorage.app",
+      messagingSenderId: "989202118697",
+      appId: "1:989202118697:web:508c40a7acfbbf80dcc438"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const container = document.getElementById("favoritosContainer");
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        container.innerHTML = `<p class="has-text-danger">Você precisa estar logado para ver os favoritos.</p>`;
+        return;
+      }
+
+      const userRef = doc(db, "usuarios", user.uid);
+      const userSnap = await getDoc(userRef);
+      const favoritos = userSnap.exists() ? userSnap.data().favoritos || [] : [];
+
+      if (favoritos.length === 0) {
+        container.innerHTML = `<p class="has-text-grey">Você ainda não adicionou livros aos favoritos.</p>`;
+        return;
+      }
+
+      for (const fav of favoritos) {
+        const ref = doc(db, `livros-${fav.categoria}`, fav.id);
+        const snap = await getDoc(ref);
+
+        if (!snap.exists()) continue;
+
+        const livro = snap.data();
+
+        const col = document.createElement("div");
+        col.className = "column is-4";
+        col.innerHTML = `
+          <div class="card">
+            <div class="card-image">
+              <figure class="image is-4by3">
+                <img src="${livro.capa}" alt="${livro.titulo}">
+              </figure>
+            </div>
+            <div class="card-content">
+              <p class="title is-5">${livro.titulo}</p>
+              <p class="subtitle is-6">${livro.autor || ""}</p>
+              <p><strong>Preço:</strong> ${livro.preco}MT</p>
+              <a href="livro.html?id=${fav.id}&categoria=${fav.categoria}" class="button is-link is-small mt-2" target="_blank">
+                Ver detalhes
+              </a>
+              <button onclick="removerFavorito('${fav.id}', '${fav.categoria}')" class="button is-danger is-small mt-2">
+                <i class="fas fa-trash"></i> Remover
+              </button>
+            </div>
+          </div>
+        `;
+        container.appendChild(col);
+      }
+    });
+
+    window.removerFavorito = async function (livroId, categoria) {
+      const user = auth.currentUser;
+      if (!user) return alert("Você precisa estar logado");
+
+      const userRef = doc(db, "usuarios", user.uid);
+
+      try {
+        await updateDoc(userRef, {
+          favoritos: arrayRemove({ id: livroId, categoria })
+        });
+
+        alert("Livro removido dos favoritos.");
+        location.reload();
+      } catch (err) {
+        console.error("Erro ao remover favorito:", err);
+        alert("Erro ao remover favorito.");
+      }
+    };
+  </script>
+</body>
+</html>
