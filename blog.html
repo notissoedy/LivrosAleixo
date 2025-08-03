@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Blog oficial do Fx-Book com dicas de leitura, marketing, empreendedorismo e mais.">
+  <title>Fx-Book Blog</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body { background: #fdfdfd; }
+    .post { margin-bottom: 2rem; border-bottom: 1px solid #ddd; padding-bottom: 1.5rem; }
+    .dark-mode { background: #1e1e1e; color: #eee; }
+    .dark-mode .box { background: #2a2a2a; }
+    .toggle-theme { float: right; margin-top: 10px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <section class="section">
+    <div class="container">
+      <h1 class="title is-3">
+        Blog Fx-Book
+        <span class="icon toggle-theme" onclick="toggleTheme()">
+          <i class="fas fa-adjust"></i>
+        </span>
+      </h1>
+      <div id="posts"></div>
+    </div>
+  </section>
+
+  <script>
+    const posts = [
+      {
+        slug: "como-escolher-livros-de-marketing",
+        titulo: "Como Escolher Livros de Marketing",
+        data: "2025-07-30",
+        autor: "Edson Notisso",
+        resumo: "Dicas práticas para escolher livros de marketing para seu crescimento profissional.",
+        conteudo: "<p>O marketing moderno exige leitura contínua. Descubra como identificar bons títulos para sua jornada.</p>"
+      },
+      {
+        slug: "beneficios-da-leitura-diaria",
+        titulo: "Benefícios da Leitura Diária",
+        data: "2025-07-28",
+        autor: "Edson Notisso",
+        resumo: "Descubra como a leitura diária transforma seu foco e produtividade.",
+        conteudo: "<p>Ler todo dia melhora a memória, reduz o estresse e amplia o vocabulário. Veja como começar hoje mesmo.</p>"
+      }
+    ];
+
+    const container = document.getElementById("posts");
+
+    posts.forEach(post => {
+      const box = document.createElement("div");
+      box.className = "box post";
+      box.innerHTML = `
+        <h2 class="title is-4">${post.titulo}</h2>
+        <p class="is-size-7 has-text-grey">${post.data} - por ${post.autor}</p>
+        <p>${post.resumo}</p>
+        <a class="button is-link is-small mt-2" onclick="verPost('${post.slug}')">Ler mais</a>
+      `;
+      container.appendChild(box);
+    });
+
+    function verPost(slug) {
+      const post = posts.find(p => p.slug === slug);
+      if (!post) return alert("Post não encontrado");
+
+      document.title = post.titulo;
+      document.querySelector('meta[name="description"]').content = post.resumo;
+      container.innerHTML = `
+        <div class="box">
+          <h1 class="title is-3">${post.titulo}</h1>
+          <p class="is-size-7 has-text-grey">${post.data} - por ${post.autor}</p>
+          ${post.conteudo}
+          <a class="button is-light mt-4" onclick="location.reload()">
+            <i class="fas fa-arrow-left mr-1"></i> Voltar ao Blog
+          </a>
+        </div>
+      `;
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle("dark-mode");
+    }
+  </script>
+</body>
+</html>

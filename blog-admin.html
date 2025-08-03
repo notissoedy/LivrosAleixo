@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editar Blog - Fx-Book</title>
+  <meta name="description" content="Editor de artigos para o blog Fx-Book. Crie posts com SEO amigável, imagens, títulos e formatação avançada.">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+  <style>
+    #editor-container { height: 300px; }
+    .hidden { display: none; }
+  </style>
+
+    <script>
+  // Ativa o menu mobile
+  document.addEventListener("DOMContentLoaded", () => {
+    const $navbarBurgers = Array.from(document.querySelectorAll(".navbar-burger"));
+
+    $navbarBurgers.forEach(el => {
+      el.addEventListener("click", () => {
+        const target = document.getElementById(el.dataset.target);
+        el.classList.toggle("is-active");
+        target.classList.toggle("is-active");
+      });
+    });
+  });
+</script>
+</head>
+<body >
+<nav class="navbar is-link" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a class="navbar-item" href="index.html">
+      📚 <strong>Fx-Book</strong>
+    </a>
+
+    <!-- Botão hamburguer (mobile) -->
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarMenu">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+
+  <div id="navbarMenu" class="navbar-menu">
+    <div class="navbar-start">
+      <a class="navbar-item" href="admin.html">Editar Livros</a>
+      <a class="navbar-item" href="blog-admin.html">Editar Blog</a>
+    </div>
+
+    <div class="navbar-end">
+      <div class="navbar-item">
+        <span id="user-email" class="mr-2"></span>
+        <div class="buttons">
+          <button class="button is-light" id="loginBtn">Login</button>
+          <button class="button is-danger is-light" id="logoutBtn" style="display:none;">Logout</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+<div class="section">
+<div class="container">
+  <h1 class="title">Editar Post do Blog</h1>
+
+  <div id="authStatus">Verificando autenticação...</div>
+  <form id="blogForm" class="box hidden">
+    <input type="hidden" id="postId">
+
+    <div class="field">
+      <label class="label">Título</label>
+      <div class="control">
+        <input class="input" type="text" id="titulo" required>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Imagem de Capa (URL)</label>
+      <div class="control">
+        <input class="input" type="url" id="imagem" required>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Legenda da Imagem</label>
+      <div class="control">
+        <input class="input" type="text" id="legenda" required>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Categoria</label>
+      <div class="control">
+        <input class="input" type="text" id="categoria" required>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Palavras-chave (separadas por vírgula)</label>
+      <div class="control">
+        <input class="input" type="text" id="palavrasChave" required>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Conteúdo</label>
+      <div id="editor-container"></div>
+      <input type="hidden" id="conteudo">
+    </div>
+
+    <div class="field is-grouped">
+      <div class="control">
+        <button type="submit" class="button is-primary">Salvar Post</button>
+      </div>
+      <div class="control">
+        <button type="button" class="button is-info" id="previewBtn">Pré-visualizar</button>
+      </div>
+      <div class="control">
+        <button type="reset" class="button is-light">Limpar</button>
+      </div>
+    </div>
+  </form>
+
+  <div id="preview" class="box hidden"></div>
+
+  <h2 class="title is-4 mt-6">Posts Existentes</h2>
+  <div id="postsList"></div>
+</div>
+</div>
+<script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBHcbcRZ98WOHEQu9t2qnjLHP9Wvz_ggPs",
+    authDomain: "aleixobook.firebaseapp.com",
+    projectId: "aleixobook",
+    storageBucket: "aleixobook.appspot.com",
+    messagingSenderId: "989202118697",
+    appId: "1:989202118697:web:508c40a7acfbbf80dcc438"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  const adminEmails = ["notissoedy@gmail.com", "notissoedydev2@gmail.com", "aleixoaleixoalfredo9@gmail.com"];
+
+  const blogForm = document.getElementById('blogForm');
+  const authStatus = document.getElementById('authStatus');
+  const postsList = document.getElementById('postsList');
+  const preview = document.getElementById('preview');
+  const previewBtn = document.getElementById('previewBtn');
+
+  const quill = new Quill('#editor-container', {
+    theme: 'snow',
+    placeholder: 'Escreva seu post aqui...'
+  });
+
+  let editandoId = null;
+
+  onAuthStateChanged(auth, user => {
+    if (user && adminEmails.includes(user.email)) {
+      authStatus.remove();
+      blogForm.classList.remove("hidden");
+      carregarPosts();
+    } else if (user) {
+      authStatus.textContent = `Acesso negado para o email: ${user.email}`;
+    } else {
+      const provider = new GoogleAuthProvider();
+      signInWithPopup(auth, provider).catch(err => {
+        authStatus.textContent = "Erro no login: " + err.message;
+      });
+    }
+  });
+
+  blogForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const post = {
+      titulo: blogForm.titulo.value,
+      imagem: blogForm.imagem.value,
+      legenda: blogForm.legenda.value,
+      categoria: blogForm.categoria.value,
+      palavrasChave: blogForm.palavrasChave.value,
+      conteudo: quill.root.innerHTML,
+      data: new Date().toISOString(),
+      autor: auth.currentUser.email
+    };
+
+    if (editandoId) {
+      await updateDoc(doc(db, "blog-posts", editandoId), post);
+      alert("✅ Post atualizado!");
+      editandoId = null;
+    } else {
+      await addDoc(collection(db, "blog-posts"), post);
+      alert("✅ Post criado!");
+    }
+
+    blogForm.reset();
+    quill.setText("");
+    carregarPosts();
+  });
+
+  previewBtn.onclick = () => {
+    preview.classList.remove("hidden");
+    preview.innerHTML = `
+      <h2 class='title'>${blogForm.titulo.value}</h2>
+      <figure><img src='${blogForm.imagem.value}' style='max-width:100%'><figcaption>${blogForm.legenda.value}</figcaption></figure>
+      <p><strong>Categoria:</strong> ${blogForm.categoria.value}</p>
+      <p><strong>Palavras-chave:</strong> ${blogForm.palavrasChave.value}</p>
+      <div>${quill.root.innerHTML}</div>
+    `;
+  };
+
+  async function carregarPosts() {
+    postsList.innerHTML = "";
+    const snap = await getDocs(collection(db, "blog-posts"));
+    snap.forEach(docSnap => {
+      const data = docSnap.data();
+      const div = document.createElement("div");
+      div.className = "box";
+      div.innerHTML = `
+        <h3 class='title is-5'>${data.titulo}</h3>
+        <p><strong>Categoria:</strong> ${data.categoria}</p>
+        <p><strong>Palavras-chave:</strong> ${data.palavrasChave}</p>
+        <button class='button is-small is-warning' onclick='editarPost("${docSnap.id}", ${JSON.stringify(data).replace(/"/g, '&quot;')})'>Editar</button>
+        <button class='button is-small is-danger' onclick='excluirPost("${docSnap.id}")'>Excluir</button>
+      `;
+      postsList.appendChild(div);
+    });
+  }
+
+  window.editarPost = (id, data) => {
+    editandoId = id;
+    blogForm.titulo.value = data.titulo;
+    blogForm.imagem.value = data.imagem;
+    blogForm.legenda.value = data.legenda;
+    blogForm.categoria.value = data.categoria;
+    blogForm.palavrasChave.value = data.palavrasChave;
+    quill.root.innerHTML = data.conteudo;
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  window.excluirPost = async (id) => {
+    if (confirm("Deseja realmente excluir este post?")) {
+      await deleteDoc(doc(db, "blog-posts", id));
+      carregarPosts();
+    }
+  }
+
+    
+  const loginBtn = document.getElementById("loginBtn");
+  const logoutBtn = document.getElementById("logoutBtn");
+  const userEmail = document.getElementById("user-email");
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+
+      loginBtn.style.display = "none";
+      logoutBtn.style.display = "inline-block";
+      userEmail.textContent = user.email;
+    } else {
+    console.log("out");
+      
+      loginBtn.style.display = "inline-block";
+      logoutBtn.style.display = "none";
+      userEmail.textContent = "";
+    }
+  });
+
+  loginBtn.onclick = () => {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider).catch((error) => alert("Erro no login: " + error.message));
+  };
+
+  logoutBtn.onclick = () => {
+    signOut(auth).then(() => location.reload());
+  };
+</script>
+</body>
+</html>

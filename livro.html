@@ -1,29 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title id="livroTitulo1" >Nome do Livro | Fx-Book</title>
-  <meta name="description" content="Veja detalhes completos sobre o livro Nome do Livro, incluindo autor, ano, preço, formato e muito mais.">
+  <title id="livroTitulo1">Nome do Livro | Fx-Book</title>
+  <meta name="description"
+    content="Veja detalhes completos sobre o livro Nome do Livro, incluindo autor, ano, preço, formato e muito mais.">
   <meta name="keywords" content="livro, autor, ISBN, formato, descrição, comprar, Fx-Book">
   <meta name="author" content="Fx-Book">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
   <style>
     .book-details {
       margin-top: 3rem;
     }
+
     .book-cover {
       max-width: 100%;
       border-radius: 8px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     }
+
     .tags span {
       margin: 0.25rem;
     }
+
     .star-rating i {
       color: #f5c518;
     }
+
     .description {
       margin-top: 2rem;
       font-size: 1.1rem;
@@ -31,7 +38,9 @@
       margin: 0.25rem;
     }
   </style>
+  <script type="text/javascript" src="https://payhip.com/payhip.js"></script>
 </head>
+
 <body>
 
   <section class="section">
@@ -59,119 +68,216 @@
           <p><strong><i class="fas fa-building"></i> Publisher:</strong> <span id="editora">Editora Exemplo</span></p>
           <p><strong><i class="fas fa-calendar-alt"></i> Ano:</strong> <span id="ano">2023</span></p>
           <p><strong><i class="fas fa-book"></i> Formato:</strong> <span id="formato">Físico</span></p>
-          <p><strong><i class="fas fa-power"></i> Tamanho:</strong> <span id="tamanho">56Mb</span></p>
+          <p><strong><i class="fas fa-building"></i> Tamanho:</strong> <span id="tamanho">56Mb</span></p>
           <p><strong><i class="fas fa-language"></i> Idioma:</strong> <span id="idioma">Português</span></p>
           <p><strong><i class="fas fa-barcode"></i> ISBN:</strong> <span id="isbn">123-456-789</span></p>
-
-          <div  id="precoContainer" class="mt-4">
-            <p id="preco" class="is-size-4 has-text-weight-semibold has-text-danger">$19.99 <span class="is-size-5 has-text-grey-light has-text-line-through ml-2">$29.99</span></p>
+          <p id="youtube" style="display: none;"><strong><i class="fas fa-video"></i> Video:</strong> <span ><a>Ver no Youtube</a></span></p>
+          <div id="precoContainer" class="mt-4">
+            <p id="preco" class="is-size-4 has-text-weight-semibold has-text-danger">$19.99 <span
+                class="is-size-5 has-text-grey-light has-text-line-through ml-2">$29.99</span></p>
           </div>
-
+         
           <div class="mt-3">
             <strong><i class="fas fa-tags"></i> Tags:</strong>
             <div id="tags" class="tags">
-            
-        
+
+
             </div>
           </div>
+            <div id="divComprar">
+              <a id="payhip" href="" class=" is-primary mt-4 payhip-buy-button" data-theme="green" data-product=""><i class="fas fa-cart-plus mr-2"></i> Comprar Agora</a>
+              <a id="loginbtn" onclick="login()" style="display: none;" class="button is-primary mt-4" ><i class="fas fa-cart-plus mr-2"></i> Comprar Agora</a>
+              
+            </div>
+           
 
-          <button class="button is-primary mt-4"><i class="fas fa-cart-plus mr-2"></i><a id="livroUrl"> Comprar Agora</a></button>
+       
+
+
+          <!-- <a href="https://payhip.com/b/8io2e" class="payhip-buy-button" data-theme="green" data-product="8io2e">Buy Now</a> -->
+
         </div>
 
         <div class=" column is-5 description ">
           <h2 class="title is-4">Descrição do Livro</h2>
           <p id="livroDescricao">
-            Este livro aborda estratégias modernas de marketing digital com uma abordagem prática e acessível. Ideal para iniciantes e profissionais que desejam atualizar seus conhecimentos. Com estudos de caso e dicas aplicáveis ao mercado moçambicano e global.
+            Este livro aborda estratégias modernas de marketing digital com uma abordagem prática e acessível. Ideal
+            para iniciantes e profissionais que desejam atualizar seus conhecimentos. Com estudos de caso e dicas
+            aplicáveis ao mercado moçambicano e global.
           </p>
         </div>
       </div>
-      </div>
+    </div>
     </div>
   </section>
-      
+
   <script type="module">
-          import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-          import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-      
-          const firebaseConfig = {
-            apiKey: "AIzaSyBHcbcRZ98WOHEQu9t2qnjLHP9Wvz_ggPs",
-            authDomain: "aleixobook.firebaseapp.com",
-            projectId: "aleixobook",
-            storageBucket: "aleixobook.firebasestorage.app",
-            messagingSenderId: "989202118697",
-            appId: "1:989202118697:web:508c40a7acfbbf80dcc438",
-            measurementId: "G-SXD8VPN6HK"
-          };
-      
-          const app = initializeApp(firebaseConfig);
-          const db = getFirestore(app);
-      
-          const params = new URLSearchParams(window.location.search);
-          const id = params.get("id");
-          const categoria = params.get("categoria");
-      
-          if (!id || !categoria) {
-            alert("Livro não encontrado.");
-          } else {
-            const docRef = doc(db, `livros-${categoria}`, id);
-            getDoc(docRef).then((docSnap) => {
-              if (docSnap.exists()) {
-                const livro = docSnap.data();
-                document.getElementById("livroCapa").src = livro.capa;
-                document.getElementById("livroTitulo").textContent = livro.titulo;
-                document.getElementById("livroTitulo1").textContent = livro.titulo;
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import {
+    getAuth,
+    signInWithEmailAndPassword,
+    sendPasswordResetEmail,onAuthStateChanged,createUserWithEmailAndPassword  } 
+    from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import {  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-                document.getElementById("livroDescricao").textContent = livro.descricao;
-                document.getElementById("livroUrl").href = livro.url;
+    const firebaseConfig = {
+      apiKey: "AIzaSyBHcbcRZ98WOHEQu9t2qnjLHP9Wvz_ggPs",
+      authDomain: "aleixobook.firebaseapp.com",
+      projectId: "aleixobook",
+      storageBucket: "aleixobook.firebasestorage.app",
+      messagingSenderId: "989202118697",
+      appId: "1:989202118697:web:508c40a7acfbbf80dcc438",
+      measurementId: "G-SXD8VPN6HK"
+    };
 
-                document.getElementById("autor").textContent = livro.autor;
-                document.getElementById("editora").textContent = livro.editora;
-                document.getElementById("ano").textContent = livro.ano;
-                document.getElementById("formato").textContent = livro.formato;
-                document.getElementById("tamanho").textContent = livro.tamanho;
-                document.getElementById("idioma").textContent = livro.idioma;
-                document.getElementById("isbn").textContent = livro.isbn;
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-                const precoContainer = document.getElementById("precoContainer");
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+    const categoria = params.get("categoria");
 
-                precoContainer.innerHTML = "";
-                const preco = document.createElement("p");
-                preco.className = "is-size-4 has-text-weight-semibold has-text-danger";
-                preco.innerHTML = `${livro.preco}MT <span class="is-size-5 has-text-grey-light has-text-line-through ml-2">${livro.novoPreco}MT</span>`;
-                precoContainer.appendChild(preco);
+    if (!id || !categoria) {
+      alert("Livro não encontrado.");
+    } else {
+      const docRef = doc(db, `livros-${categoria}`, id);
+      getDoc(docRef).then((docSnap) => {
+        if (docSnap.exists()) {
+          const livro = docSnap.data();
+          document.getElementById("livroCapa").src = livro.capa;
+          document.getElementById("livroTitulo").textContent = livro.titulo;
+          document.getElementById("livroTitulo1").textContent = livro.titulo;
 
-           
+          document.getElementById("livroDescricao").textContent = livro.descricao;
+          // document.getElementById("livroUrl").href = livro.url;
 
-            const tags = livro.tags;
-            const tagArray = tags.split(',');
+          document.getElementById("autor").textContent = livro.autor;
+          document.getElementById("editora").textContent = livro.editora;
+          document.getElementById("ano").textContent = livro.ano;
+          document.getElementById("formato").textContent = livro.formato;
+          document.getElementById("tamanho").textContent = livro.tamanho;
+          document.getElementById("idioma").textContent = livro.idioma;
+          document.getElementById("isbn").textContent = livro.isbn;
 
-            const colors = ["is-info", "is-success", "is-warning", "is-primary", "is-danger"];
-            const tagsContainer = document.getElementById("tags");
+          const precoContainer = document.getElementById("precoContainer");
 
-            tagArray.forEach((tag, index) => {
-              const span = document.createElement("span");
-              span.className = `tag ${colors[index % colors.length]}`;
-              span.textContent = tag.trim();
-              tagsContainer.appendChild(span);
-            });
+          precoContainer.innerHTML = "";
+          const preco = document.createElement("p");
+          preco.className = "is-size-4 has-text-weight-semibold has-text-danger";
+          preco.innerHTML = `${livro.preco}MT <span class="is-size-5 has-text-grey-light has-text-line-through ml-2">${livro.novoPreco}MT</span>`;
+          precoContainer.appendChild(preco);
 
+
+
+          const tags = livro.tags;
+          const tagArray = tags.split(',');
+
+          const colors = ["is-info", "is-success", "is-warning", "is-primary", "is-danger"];
+          const tagsContainer = document.getElementById("tags");
+
+          tagArray.forEach((tag, index) => {
+            const span = document.createElement("span");
+            span.className = `tag ${colors[index % colors.length]}`;
+            span.textContent = tag.trim();
+            tagsContainer.appendChild(span);
+          });
+
+
+
+          const star = document.getElementById("star");
+          star.innerHTML = ` ${"<i class='fas fa-star'></i>".repeat(livro.estrelas || 0)}
+                                <i class="fas fa-star-half-alt"></i>`;
+
+          const divComprar = document.getElementById("divComprar");
+
+          if(livro.video){
+             const youtube = document.getElementById("youtube");
+             youtube.style.display = "inline-block";
+             youtube.innerHTML=`<strong><i class="fas fa-video"></i> Video:</strong> <span ><a  href="${livro.video}" target="_blank">Ver no Youtube</a></span>`;
+          }
+
+          // Verifica se o URL contém 'payhip.com/b/'
+          if (livro.url && livro.url.includes("payhip.com/b/")) {
+            // Extrai o ID do produto do final da URL
+            const payhipProductId = livro.url.split("/b/")[1];
+
+
+            const payhip = document.getElementById("payhip");
          
 
-              const star = document.getElementById("star");
-              star.innerHTML = ` ${"<i class='fas fa-star'></i>".repeat(livro.estrelas || 0)}
-                                <i class="fas fa-star-half-alt"></i>`;
-              } else {
-                alert("Livro não encontrado.");
-              }
-            }).catch((error) => {
-              console.error("Erro ao buscar livro:", error);
-              alert("Erro ao carregar livro.");
-            });
+            payhip.href = livro.url;
+            payhip.setAttribute("data-product", payhipProductId);
+            
+
+          } else {
+            // Caso não seja Payhip, exibe o botão tradicional (opcional)
+            divComprar.innerHTML = `
+              <a href="${livro.url}" target="_blank" class="button is-primary is-medium  mt-4 ">
+                <i class="fas fa-cart-plus mr-2"></i> Amazon 
+              </a>
+               
+            `;
           }
+
+        } else {
+          alert("Livro não encontrado.");
+        }
+      }).catch((error) => {
+        console.error("Erro ao buscar livro:", error);
+        alert("Erro ao carregar livro.");
+      });
+
+
+    }
+
+               // 🔐 Função de login
+      const login = async (event) => {
+         alert("Login realizado com sucesso!");
+        // event.preventDefault(); // evita recarregar página
+
+        // const email = document.getElementById("loginEmail").value.trim();
+        // const password = document.getElementById("loginPassword").value;
+
+        // try {
+        //   const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        //   const user = userCredential.user;
+
+        //   alert("Login realizado com sucesso!");
+        //   // Redirecionar ou esconder login-form
+        //   document.querySelector(".login-form-container").classList.remove("active");
+
+        // } catch (error) {
+        //   console.error(error);
+        //   alert("Erro no login: " + error.message);
+        // }
+      };
+      window.login = login;
+
+            const payhip = document.getElementById("payhip");
+            const loginbtn = document.getElementById("loginbtn");
+
+            const auth = getAuth();
+            onAuthStateChanged(auth, async (user) => {
+                // if (user) {
+                //   console.log("in");
+                //        payhip.style.display="inline-block";
+                //        payhip.className=" is-primary mt-4 payhip-buy-button";
+                //        loginbtn.style.display="none";
+                // }else{
+                //        payhip.style.display="none";
+                //        payhip.className="";
+                //        loginbtn.style.display="inline-block";
+                       
+                // }
+            });
   </script>
 
-  
+
 
 
 </body>
+
 </html>

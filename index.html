@@ -16,18 +16,19 @@
 <header class="header">
     <div class="header-1">
 
-        <a href="#" class="logo"> <i class="fas fa-book"></i> Fx-Book </a>
+        <a href="#" class="logo"> <i class="fas fa-book"></i> FX-Book </a>
 
         <form action="" class="search-form">
             <input type="search" name="" placeholder="search here..." id="search-box">
             <label for="search-box" class="fas fa-search"></label>
         </form>
 
-        <div class="icons">
+        <div id="icons" class="icons">
             <div id="search-btn" class="fas fa-search"></div>
             <a href="favoritos.html" class="fas fa-heart"></a>
             <a href="#" class="fas fa-shopping-cart"></a>
             <div id="login-btn" class="fas fa-user"></div>
+            <div id="loginoutId" class="fas fa-sign-out-alt" onclick="logOut()"></div>
         </div>
 
     </div>
@@ -167,7 +168,7 @@
 
 <!-- featured section starts  -->
 
-<section class="featured" id="featured">
+<section class="featured" id="c">
 
     <h1 class="heading"> <span>livros em destaque</span> </h1>
 
@@ -647,14 +648,14 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     // import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
     import { getFirestore, collection, getDocs, doc, getDoc, updateDoc, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-    import {  onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
     import {
     getAuth,
     signInWithEmailAndPassword,
-    sendPasswordResetEmail
-  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-  import {  createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-  import { setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    sendPasswordResetEmail,onAuthStateChanged,createUserWithEmailAndPassword  } 
+    from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import {  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBHcbcRZ98WOHEQu9t2qnjLHP9Wvz_ggPs",
@@ -712,8 +713,8 @@
     slide.className = "swiper-slide box";
     slide.innerHTML = `
       <div class="icons">
-        <a href="#" class="fas fa-search"></a>
-        <a href="#" class="fas fa-heart ${heartClass}" onclick="toggleFavorite('${doc.id}', 'featured', this)"></a>
+        <a href="#featured" class="fas fa-search"></a>
+        <a href="#featured" class="fas fa-heart ${heartClass}" onclick="toggleFavorite('${doc.id}', 'featured', this)"></a>
         <a href="livro.html?id=${doc.id}&categoria=featured" class="fas fa-eye"></a>
       </div>
       <div class="image">
@@ -721,8 +722,8 @@
       </div>
       <div class="content">
         <h3>${data.titulo}</h3>
-        <div class="price"> ${data.preco - 4} <span> ${data.preco}</span></div>
-        <a href="${data.url}" class="btn">Comprar</a>
+        <div class="price"> ${data.novoPreco} <span> ${data.preco}</span></div>
+        <a href="livro.html?id=${doc.id}&categoria=featured" class="btn">Comprar</a>
       </div>
     `;
     container.appendChild(slide);
@@ -754,6 +755,12 @@
       const docRef = doc(db, "usuarios", user.uid);
       const snapshot = await getDoc(docRef);
       userSnap = snapshot.exists() ? snapshot : null;
+
+       loginoutId.style.display = "inline-block";
+    }else {
+            // Ninguém autenticado
+            
+           loginoutId.style.display = "none";
     }
 
     const [featuredSnap, newSnap, new2Snap] = await Promise.all([
@@ -838,6 +845,19 @@ const signup = async function (event) {
   };
 
   window.forgotPassword = forgotPassword;
+
+  const logOut = async () => {
+   signOut(auth).then(() => {
+    alert("Você saiu da conta.");
+  }).catch((error) => {
+    console.error("Erro ao sair:", error);
+  });
+  };
+
+  window.logOut = logOut;
+
+  
+ 
   // Exibe o formulário de cadastro
   const showSignup = () => {
     document.querySelector('.login-form-container').classList.remove('active');

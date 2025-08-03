@@ -6,15 +6,19 @@
   <title>Meus Favoritos | Fx-Book</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <!-- <script type="text/javascript" src="https://payhip.com/payhip.js"></script> -->
 </head>
 <body>
   <section class="section">
     <div class="container">
+      <!-- <a href="https://payhip.com/b/8io2e" class="payhip-buy-button" data-theme="green" data-product="8io2e">Buy Now</a> -->
       <h1 class="title">Meus Favoritos</h1>
       <div id="favoritosContainer" class="columns is-multiline">
         <!-- Livros serão carregados aqui -->
       </div>
     </div>
+
+    <!-- <div class="payhip-embed-page" data-key="8io2e">...</div><script type="text/javascript" src="https://payhip.com/embed-page.js?v=24u68984"></script> -->
   </section>
 
   <script type="module">
@@ -73,7 +77,7 @@
               <p class="title is-5">${livro.titulo}</p>
               <p class="subtitle is-6">${livro.autor || ""}</p>
               <p><strong>Preço:</strong> ${livro.preco}MT</p>
-              <a href="livro.html?id=${fav.id}&categoria=${fav.categoria}" class="button is-link is-small mt-2" target="_blank">
+              <a href="livro.html?id=${fav.id}&categoria=${fav.categoria}" class="button is-link is-small mt-2">
                 Ver detalhes
               </a>
               <button onclick="removerFavorito('${fav.id}', '${fav.categoria}')" class="button is-danger is-small mt-2">
