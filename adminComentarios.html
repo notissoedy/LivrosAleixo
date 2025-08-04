@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel Admin - Fx-Book</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getFirestore, collection, getDocs, deleteDoc, doc, updateDoc, query, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBHcbcRZ98WOHEQu9t2qnjLHP9Wvz_ggPs",
+      authDomain: "aleixobook.firebaseapp.com",
+      projectId: "aleixobook",
+      storageBucket: "aleixobook.appspot.com",
+      messagingSenderId: "989202118697",
+      appId: "1:989202118697:web:508c40a7acfbbf80dcc438"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+
+    const admins = [
+      "notissoedy@gmail.com",
+      "notissoedydev2@gmail.com",
+      "aleixoaleixoalfredo9@gmail.com"
+    ];
+
+    const loginBtn = document.getElementById("loginBtn");
+    const comentariosContainer = document.getElementById("comentariosPendentes");
+
+    loginBtn.onclick = () => {
+      signInWithPopup(auth, provider);
+    };
+
+    onAuthStateChanged(auth, async user => {
+      if (user && admins.includes(user.email)) {
+        document.getElementById("authInfo").innerHTML = `<p class="has-text-success">Logado como <strong>${user.email}</strong></p>`;
+        carregarComentariosPendentes();
+      } else {
+        document.getElementById("authInfo").innerHTML = `<p class="has-text-danger">Acesso negado. Faça login com um email autorizado.</p>`;
+      }
+    });
+
+    async function carregarComentariosPendentes() {
+      comentariosContainer.innerHTML = '<p>Carregando...</p>';
+      const q = query(collection(db, "comentarios"), where("aprovado", "==", false));
+      const snap = await getDocs(q);
+      if (snap.empty) {
+        comentariosContainer.innerHTML = '<p class="has-text-grey">Nenhum comentário pendente.</p>';
+        return;
+      }
+      comentariosContainer.innerHTML = "";
+      snap.forEach(docSnap => {
+        const c = docSnap.data();
+        const div = document.createElement("div");
+        div.className = "box";
+        div.innerHTML = `
+          <p><strong>${c.nome}</strong> - <small>${new Date(c.data).toLocaleString()}</small></p>
+          <p>${c.mensagem}</p>
+          <div class="buttons mt-2">
+            <button class="button is-small is-success">Aprovar</button>
+            <button class="button is-small is-danger">Excluir</button>
+          </div>
+        `;
+        const [aprovarBtn, excluirBtn] = div.querySelectorAll("button");
+        aprovarBtn.onclick = async () => {
+          await updateDoc(doc(db, "comentarios", docSnap.id), { aprovado: true });
+          div.remove();
+        };
+        excluirBtn.onclick = async () => {
+          if (confirm("Deseja excluir este comentário?")) {
+            await deleteDoc(doc(db, "comentarios", docSnap.id));
+            div.remove();
+          }
+        };
+        comentariosContainer.appendChild(div);
+      });
+    }
+  </script>
+</head>
+<body>
+  <section class="section">
+    <div class="container">
+      <h1 class="title">Painel de Moderação</h1>
+      <div id="authInfo" class="mb-4">
+        <button class="button is-link" id="loginBtn">Login com Google</button>
+      </div>
+      <h2 class="subtitle">Comentários Pendentes</h2>
+      <div id="comentariosPendentes"></div>
+    </div>
+  </section>
+</body>
+</html>

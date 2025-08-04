@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="pageTitle">Post - Fx-Book</title>
+  <meta name="description" content="Leia o conteúdo completo de um post do blog Fx-Book." />
+  <meta property="og:title" content="Fx-Book Post" id="ogTitle" />
+  <meta property="og:description" content="Post do blog Fx-Book." id="ogDesc" />
+  <meta property="og:image" content="" id="og-image" />
+  <meta property="og:url" content="" id="og-url" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <style>
+    body {
+      background-color: #f5f5f5;
+    }
+    .post-content img {
+      max-width: 100%;
+      border-radius: 8px;
+    }
+    .share-buttons a {
+      margin-right: 10px;
+    }
+    .comentario {
+      border-top: 1px solid #ddd;
+      padding-top: 1rem;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar is-light" role="navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="index.html">📚 <strong>Fx-Book</strong></a>
+    </div>
+  </nav>
+
+  <section class="section">
+    <div class="container">
+      <div id="postContent" class="box post-content">
+        <p>Carregando post...</p>
+      </div>
+
+      <div class="share-buttons mt-4">
+        <p class="is-size-6 mb-2">Compartilhar:</p>
+        <a id="shareWhatsapp" class="button is-small is-success" target="_blank">WhatsApp</a>
+        <a id="shareFacebook" class="button is-small is-info" target="_blank">Facebook</a>
+        <a id="shareTwitter" class="button is-small is-link" target="_blank">Twitter</a>
+      </div>
+
+      <div class="mt-6">
+        <h2 class="title is-5">Comentários</h2>
+
+        <div id="loginArea" class="mb-4">
+          <button id="loginBtn" class="button is-small is-dark">Entrar com Google (opcional)</button>
+        </div>
+
+        <form id="formComentario" class="box">
+          <div class="field" id="nomeField">
+            <label class="label">Seu nome</label>
+            <div class="control">
+              <input class="input" type="text" id="nome" required>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Comentário</label>
+            <div class="control">
+              <textarea class="textarea" id="mensagem" required></textarea>
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <button type="submit" class="button is-link">Enviar comentário</button>
+            </div>
+          </div>
+        </form>
+
+        <div id="comentarios"></div>
+      </div>
+
+      <h2 class="title is-5 mt-6">Leia também</h2>
+      <div id="maisArtigos" class="columns is-multiline"></div>
+    </div>
+  </section>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, doc, getDoc, collection, getDocs, addDoc, query, where, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBHcbcRZ98WOHEQu9t2qnjLHP9Wvz_ggPs",
+      authDomain: "aleixobook.firebaseapp.com",
+      projectId: "aleixobook",
+      storageBucket: "aleixobook.appspot.com",
+      messagingSenderId: "989202118697",
+      appId: "1:989202118697:web:508c40a7acfbbf80dcc438"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+
+    const params = new URLSearchParams(window.location.search);
+    const postId = params.get("id");
+    const tituloUrl = params.get("titulo") || "post";
+    const container = document.getElementById("postContent");
+
+    let nomeLogado = null;
+
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        nomeLogado = user.displayName || user.email;
+        document.getElementById("nomeField").classList.add("is-hidden");
+        document.getElementById("nome").required = false;
+        document.getElementById("loginArea").innerHTML = `<p class='has-text-success'>Conectado como <strong>${nomeLogado}</strong></p>`;
+      }
+    });
+
+    document.getElementById("loginBtn").onclick = () => {
+      signInWithPopup(auth, provider);
+    };
+
+    async function carregarPost() {
+      if (!postId) {
+        container.innerHTML = '<p class="has-text-danger">Post não encontrado.</p>';
+        return;
+      }
+      const postRef = doc(db, "blog-posts", postId);
+      const docSnap = await getDoc(postRef);
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        document.title = data.titulo + " - Fx-Book";
+        document.querySelector('meta[name="description"]').setAttribute('content', data.legenda);
+        document.getElementById('og-image').setAttribute('content', data.imagem);
+        document.getElementById('og-url').setAttribute('content', window.location.href);
+        document.getElementById('ogTitle').setAttribute('content', data.titulo);
+        document.getElementById('ogDesc').setAttribute('content', data.legenda);
+
+        container.innerHTML = `
+          <h1 class="title is-3">${data.titulo}</h1>
+          <figure>
+            <img src="${data.imagem}" alt="Imagem de capa">
+            <figcaption class="has-text-grey">${data.legenda}</figcaption>
+          </figure>
+          <p class="is-size-7 mt-2"><strong>Categoria:</strong> ${data.categoria}</p>
+          <p class="is-size-7"><strong>Palavras-chave:</strong> ${data.palavrasChave}</p>
+          <hr>
+          <div>${data.conteudo}</div>
+        `;
+
+        const shareUrl = window.location.origin + window.location.pathname + `?id=${postId}&titulo=${encodeURIComponent(tituloUrl)}`;
+        document.getElementById("shareWhatsapp").href = `https://wa.me/?text=${encodeURIComponent(data.titulo + ' - ' + shareUrl)}`;
+        document.getElementById("shareFacebook").href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
+        document.getElementById("shareTwitter").href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(data.titulo)}&url=${encodeURIComponent(shareUrl)}`;
+      }
+    }
+
+    async function carregarComentarios() {
+      const comentariosDiv = document.getElementById("comentarios");
+      comentariosDiv.innerHTML = "";
+      const snap = await getDocs(query(
+        collection(db, "comentarios"),
+        where("postId", "==", postId),
+        where("aprovado", "==", true),
+        orderBy("data", "desc")
+      ));
+      if (snap.empty) {
+        comentariosDiv.innerHTML = "<p class='has-text-grey'>Nenhum comentário ainda.</p>";
+        return;
+      }
+      snap.forEach(doc => {
+        const c = doc.data();
+        const div = document.createElement("div");
+        div.className = "comentario";
+        div.innerHTML = `
+          <p><strong>${c.nome}</strong> <small class="has-text-grey">${new Date(c.data).toLocaleString()}</small></p>
+          <p>${c.mensagem}</p>
+        `;
+        comentariosDiv.appendChild(div);
+      });
+    }
+import { serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+    document.getElementById("formComentario").addEventListener("submit", async e => {
+      e.preventDefault();
+      const nomeInput = document.getElementById("nome");
+      const nome = nomeLogado || nomeInput.value.trim();
+      const mensagem = document.getElementById("mensagem").value.trim();
+      if (!nome || !mensagem) return alert("Preencha todos os campos.");
+
+      await addDoc(collection(db, "comentarios"), {
+        postId,
+        nome,
+        mensagem,
+        data: serverTimestamp(),
+        aprovado: false
+      });
+
+      document.getElementById("formComentario").reset();
+      alert("Seu comentário foi enviado para revisão.");
+    });
+
+    async function carregarOutrosPosts() {
+      const snap = await getDocs(collection(db, "blog-posts"));
+      const posts = [];
+      snap.forEach(doc => {
+        if (doc.id !== postId) posts.push({ id: doc.id, ...doc.data() });
+      });
+      const container = document.getElementById("maisArtigos");
+      posts.slice(0, 3).forEach(post => {
+        const slug = post.titulo.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+        const col = document.createElement("div");
+        col.className = "column is-4";
+        col.innerHTML = `
+          <div class="box">
+            <h3 class="title is-6">${post.titulo}</h3>
+            <figure><img src="${post.imagem}" alt="" style="max-width: 100%; height: auto;"></figure>
+            <p class="is-size-7">${post.categoria}</p>
+            <a class="button is-small is-link mt-2" href="post.html?id=${post.id}&titulo=${slug}">Ver mais</a>
+          </div>
+        `;
+        container.appendChild(col);
+      });
+    }
+
+    carregarPost();
+    carregarComentarios();
+    carregarOutrosPosts();
+  </script>
+</body>
+</html>

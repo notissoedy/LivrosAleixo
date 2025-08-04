@@ -1,88 +1,152 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Blog oficial do Fx-Book com dicas de leitura, marketing, empreendedorismo e mais.">
-  <title>Fx-Book Blog</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog - Fx-Book</title>
+  <meta name="description" content="Explore artigos incríveis sobre livros, educação, leitura e desenvolvimento pessoal no blog Fx-Book." />
+  <meta name="keywords" content="blog, livros, leitura, desenvolvimento pessoal, educação, fx-book">
+  <meta name="author" content="Fx-Book">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
-    body { background: #fdfdfd; }
-    .post { margin-bottom: 2rem; border-bottom: 1px solid #ddd; padding-bottom: 1.5rem; }
-    .dark-mode { background: #1e1e1e; color: #eee; }
-    .dark-mode .box { background: #2a2a2a; }
-    .toggle-theme { float: right; margin-top: 10px; cursor: pointer; }
+    body {
+      background-color: #f5f5f5;
+    }
+    .blog-post img {
+      max-width: 100%;
+      border-radius: 8px;
+    }
+    .image-preview {
+      max-height: 350px;
+      object-fit: cover;
+      width: 100%;
+    }
+    .search-bar {
+      margin-bottom: 2rem;
+    }
   </style>
 </head>
 <body>
+  <nav class="navbar is-light" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="index.html">📚 <strong>Fx-Book</strong></a>
+    </div>
+  </nav>
+
   <section class="section">
     <div class="container">
-      <h1 class="title is-3">
-        Blog Fx-Book
-        <span class="icon toggle-theme" onclick="toggleTheme()">
-          <i class="fas fa-adjust"></i>
-        </span>
-      </h1>
-      <div id="posts"></div>
+      <h1 class="title is-3">Blog Fx-Book</h1>
+
+      <div class="field has-addons search-bar">
+        <div class="control is-expanded">
+          <input id="searchInput" class="input" type="text" placeholder="Buscar por título, categoria ou palavra-chave...">
+        </div>
+        <div class="control">
+          <button id="searchBtn" class="button is-link">Buscar</button>
+        </div>
+      </div>
+
+      <h2 class="title is-4">Artigo em destaque</h2>
+      <div id="artigoPrincipal" class="box blog-post"></div>
+
+      <h2 class="title is-4 mt-6">Artigos relacionados</h2>
+      <div id="artigosRelacionados" class="columns is-multiline"></div>
     </div>
   </section>
 
-  <script>
-    const posts = [
-      {
-        slug: "como-escolher-livros-de-marketing",
-        titulo: "Como Escolher Livros de Marketing",
-        data: "2025-07-30",
-        autor: "Edson Notisso",
-        resumo: "Dicas práticas para escolher livros de marketing para seu crescimento profissional.",
-        conteudo: "<p>O marketing moderno exige leitura contínua. Descubra como identificar bons títulos para sua jornada.</p>"
-      },
-      {
-        slug: "beneficios-da-leitura-diaria",
-        titulo: "Benefícios da Leitura Diária",
-        data: "2025-07-28",
-        autor: "Edson Notisso",
-        resumo: "Descubra como a leitura diária transforma seu foco e produtividade.",
-        conteudo: "<p>Ler todo dia melhora a memória, reduz o estresse e amplia o vocabulário. Veja como começar hoje mesmo.</p>"
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBHcbcRZ98WOHEQu9t2qnjLHP9Wvz_ggPs",
+      authDomain: "aleixobook.firebaseapp.com",
+      projectId: "aleixobook",
+      storageBucket: "aleixobook.appspot.com",
+      messagingSenderId: "989202118697",
+      appId: "1:989202118697:web:508c40a7acfbbf80dcc438"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    let allPosts = [];
+
+    async function carregarPosts(filtro = "") {
+      const snap = await getDocs(collection(db, "blog-posts"));
+      allPosts = [];
+      snap.forEach(doc => allPosts.push({ id: doc.id, ...doc.data() }));
+      allPosts.sort((a, b) => new Date(b.data) - new Date(a.data));
+
+      const postsFiltrados = allPosts.filter(post => {
+        const termo = filtro.toLowerCase();
+        return (
+          post.titulo.toLowerCase().includes(termo) ||
+          post.categoria.toLowerCase().includes(termo) ||
+          post.palavrasChave.toLowerCase().includes(termo)
+        );
+      });
+
+      renderizarPosts(postsFiltrados);
+    }
+
+    function slugify(str) {
+      return str.toLowerCase()
+        .normalize('NFD').replace(/\p{Diacritic}/gu, '')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+    }
+
+    function renderizarPosts(posts) {
+      const principal = posts[0];
+      const containerPrincipal = document.getElementById("artigoPrincipal");
+      const containerRelacionados = document.getElementById("artigosRelacionados");
+
+      containerPrincipal.innerHTML = principal ? `
+        <article>
+          <h2 class="title is-4">${principal.titulo}</h2>
+          <figure>
+            <img src="${principal.imagem}" alt="Imagem de capa" class="image-preview">
+            <figcaption class="has-text-grey">${principal.legenda}</figcaption>
+          </figure>
+          <p class="is-size-7"><strong>Categoria:</strong> ${principal.categoria}</p>
+          <p class="is-size-7"><strong>Palavras-chave:</strong> ${principal.palavrasChave}</p>
+          <div class="mt-2">${principal.conteudo.slice(0, 300)}...</div>
+          <a class="button is-link is-small mt-3" href="post.html?id=${principal.id}&titulo=${slugify(principal.titulo)}">Ler mais</a>
+        </article>` : '<p>Nenhum post encontrado.</p>';
+
+      containerRelacionados.innerHTML = "";
+      posts.slice(1, 5).forEach(post => {
+        const col = document.createElement("div");
+        col.className = "column is-6-tablet is-4-desktop";
+        col.innerHTML = `
+          <div class="box">
+            <h3 class="title is-6">${post.titulo}</h3>
+            <figure>
+              <img src="${post.imagem}" alt="Imagem relacionada" class="image-preview">
+            </figure>
+            <p class="is-size-7 has-text-grey">${post.legenda}</p>
+            <p class="is-size-7">Categoria: ${post.categoria}</p>
+            <a href="post.html?id=${post.id}&titulo=${slugify(post.titulo)}" class="button is-small is-link mt-2">Ver detalhes</a>
+          </div>
+        `;
+        containerRelacionados.appendChild(col);
+      });
+    }
+
+    document.getElementById("searchBtn").onclick = () => {
+      const termo = document.getElementById("searchInput").value;
+      carregarPosts(termo);
+    };
+
+    document.getElementById("searchInput").addEventListener("keypress", e => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        document.getElementById("searchBtn").click();
       }
-    ];
-
-    const container = document.getElementById("posts");
-
-    posts.forEach(post => {
-      const box = document.createElement("div");
-      box.className = "box post";
-      box.innerHTML = `
-        <h2 class="title is-4">${post.titulo}</h2>
-        <p class="is-size-7 has-text-grey">${post.data} - por ${post.autor}</p>
-        <p>${post.resumo}</p>
-        <a class="button is-link is-small mt-2" onclick="verPost('${post.slug}')">Ler mais</a>
-      `;
-      container.appendChild(box);
     });
 
-    function verPost(slug) {
-      const post = posts.find(p => p.slug === slug);
-      if (!post) return alert("Post não encontrado");
-
-      document.title = post.titulo;
-      document.querySelector('meta[name="description"]').content = post.resumo;
-      container.innerHTML = `
-        <div class="box">
-          <h1 class="title is-3">${post.titulo}</h1>
-          <p class="is-size-7 has-text-grey">${post.data} - por ${post.autor}</p>
-          ${post.conteudo}
-          <a class="button is-light mt-4" onclick="location.reload()">
-            <i class="fas fa-arrow-left mr-1"></i> Voltar ao Blog
-          </a>
-        </div>
-      `;
-    }
-
-    function toggleTheme() {
-      document.body.classList.toggle("dark-mode");
-    }
+    carregarPosts();
   </script>
 </body>
 </html>
