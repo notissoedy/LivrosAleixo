@@ -11,7 +11,12 @@
 
 </head>
 <body>
-    
+    <style>
+  body {
+    //background-color: #f5f5f5; /* Cinza suave */
+     background-color: #e0e0e0;
+  }
+</style>
 <!-- header section starts  -->
 <header class="header">
     <div class="header-1">
@@ -40,6 +45,7 @@
             <a href="#arrivals">arrivals</a>
             <a href="#reviews">reviews</a>
             <a href="#blogs">blogs</a>
+            <a id="adminLink" href="admin.html">Admin</a>
         </nav>
     </div>
 
@@ -53,6 +59,7 @@
     <a href="#arrivals" class="fas fa-tags"></a>
     <a href="#reviews" class="fas fa-comments"></a>
     <a href="#blogs" class="fas fa-blog"></a>
+    <a id="adminLink2" href="admin.html" class="fas fa-adjust">admin</a>
 </nav>
 
 <!-- login form  -->
@@ -747,8 +754,25 @@
     };
 
     async function carregarLivros() {
+         const adminEmails = ["notissoedy@gmail.com", "notissoedydev2@gmail.com", "aleixoaleixoalfredo9@gmail.com"];
+
   const auth = getAuth();
+  const adminLink = document.getElementById('adminLink');
+  const adminLink2 = document.getElementById('adminLink2');
+
   onAuthStateChanged(auth, async (user) => {
+
+    if (user && adminEmails.includes(user.email)) {
+   
+       adminLink.style.display = "inline-block";
+       adminLink2.style.display = "inline-block";
+
+
+    } else {
+       adminLink.style.display = "none";
+       adminLink2.style.display = "none";
+    }
+
     let userSnap = null;
 
     if (user) {

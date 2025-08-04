@@ -28,6 +28,24 @@
 </script>
 </head>
 <body >
+
+      <!-- Modal de Pré-visualização -->
+<div class="modal" id="previewModal">
+  <div class="modal-background"></div>
+  <div class="modal-card" style="width: 90%; max-width: 1000px;">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Pré-visualização do Post</p>
+      <button class="delete" aria-label="close" id="fecharModal"></button>
+    </header>
+    <section class="modal-card-body">
+      <div id="preview" class="content"></div>
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button" id="fecharModalBtn">Fechar</button>
+    </footer>
+  </div>
+</div>
+
 <nav class="navbar is-link" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
     <a class="navbar-item" href="index.html">
@@ -202,16 +220,31 @@
     carregarPosts();
   });
 
-  previewBtn.onclick = () => {
-    preview.classList.remove("hidden");
-    preview.innerHTML = `
-      <h2 class='title'>${blogForm.titulo.value}</h2>
-      <figure><img src='${blogForm.imagem.value}' style='max-width:100%'><figcaption>${blogForm.legenda.value}</figcaption></figure>
-      <p><strong>Categoria:</strong> ${blogForm.categoria.value}</p>
-      <p><strong>Palavras-chave:</strong> ${blogForm.palavrasChave.value}</p>
-      <div>${quill.root.innerHTML}</div>
-    `;
-  };
+ previewBtn.onclick = () => {
+  const modal = document.getElementById("previewModal");
+  const preview = document.getElementById("preview");
+
+  preview.innerHTML = `
+    <h2 class="title is-3">${blogForm.titulo.value}</h2>
+    <figure>
+      <img src="${blogForm.imagem.value}" alt="Imagem de capa" style="max-width:100%; border-radius: 6px;">
+      <figcaption class="has-text-grey">${blogForm.legenda.value}</figcaption>
+    </figure>
+    <p><strong>Categoria:</strong> ${blogForm.categoria.value}</p>
+    <p><strong>Palavras-chave:</strong> ${blogForm.palavrasChave.value}</p>
+    <hr>
+    <div>${quill.root.innerHTML}</div>
+  `;
+
+  modal.classList.add("is-active");
+};
+
+document.getElementById("fecharModal").onclick = () => {
+  document.getElementById("previewModal").classList.remove("is-active");
+};
+document.getElementById("fecharModalBtn").onclick = () => {
+  document.getElementById("previewModal").classList.remove("is-active");
+};
 
   async function carregarPosts() {
     postsList.innerHTML = "";
