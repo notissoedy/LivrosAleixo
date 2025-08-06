@@ -1,0 +1,84 @@
+<script>
+  // Ativa o menu mobile
+  document.addEventListener("DOMContentLoaded", () => {
+    const $navbarBurgers = Array.from(document.querySelectorAll(".navbar-burger"));
+
+    $navbarBurgers.forEach(el => {
+      el.addEventListener("click", () => {
+        const target = document.getElementById(el.dataset.target);
+        el.classList.toggle("is-active");
+        target.classList.toggle("is-active");
+      });
+    });
+  });
+</script>
+
+
+<!-- Navbar -->
+<nav class="navbar is-link" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a class="navbar-item" href="index.html">
+      📚 <strong>Fx-Book</strong>
+    </a>
+
+    <!-- Botão hamburguer (mobile) -->
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarMenu">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+
+  <div id="navbarMenu" class="navbar-menu">
+    <div class="navbar-start">
+      <a class="navbar-item" href="admin.html">Editar Livros</a>
+      <a class="navbar-item" href="blog-admin.html">Editar Blog</a>
+      <a class="navbar-item" href="blog-admin.html">Aprovar Comentarios</a>
+    </div>
+
+    <div class="navbar-end">
+      <div class="navbar-item">
+        <span id="user-email" class="mr-2"></span>
+        <div class="buttons">
+          <button class="button is-light" id="loginBtn">Login</button>
+          <button class="button is-danger is-light" id="logoutBtn" style="display:none;">Logout</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <script type="module">
+
+  import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+  const auth = getAuth(app);
+
+  const loginBtn = document.getElementById("loginBtn");
+  const logoutBtn = document.getElementById("logoutBtn");
+  const userEmail = document.getElementById("user-email");
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+
+      loginBtn.style.display = "none";
+      logoutBtn.style.display = "inline-block";
+      userEmail.textContent = user.email;
+    } else {
+
+      
+      loginBtn.style.display = "inline-block";
+      logoutBtn.style.display = "none";
+      userEmail.textContent = "";
+    }
+  });
+
+  loginBtn.onclick = () => {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider).catch((error) => alert("Erro no login: " + error.message));
+  };
+
+  logoutBtn.onclick = () => {
+    signOut(auth).then(() => location.reload());
+  };
+</script>

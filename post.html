@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title id="pageTitle">Post - Fx-Book</title>
-  <meta name="description" content="Leia o conteúdo completo de um post do blog Fx-Book." />
-  <meta property="og:title" content="Fx-Book Post" id="ogTitle" />
-  <meta property="og:description" content="Post do blog Fx-Book." id="ogDesc" />
+  <title id="pageTitle">Post - BILLIONAIRE-EBOOKS</title>
+  <meta name="description" content="Leia o conteúdo completo de um post do blog BILLIONAIRE-EBOOKS." />
+  <meta property="og:title" content="BILLIONAIRE-EBOOKS Post" id="ogTitle" />
+  <meta property="og:description" content="Post do blog BILLIONAIRE-EBOOKS." id="ogDesc" />
   <meta property="og:image" content="" id="og-image" />
   <meta property="og:url" content="" id="og-url" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
@@ -29,9 +29,9 @@
   </style>
 </head>
 <body>
-  <nav class="navbar is-light" role="navigation">
+  <nav class="navbar is-dark" role="navigation">
     <div class="navbar-brand">
-      <a class="navbar-item" href="index.html">📚 <strong>Fx-Book</strong></a>
+      <a class="navbar-item" href="index.html">📚 <strong>BILLIONAIRE-EBOOKS</strong></a>
     </div>
   </nav>
 
@@ -131,7 +131,7 @@
       const docSnap = await getDoc(postRef);
       if (docSnap.exists()) {
         const data = docSnap.data();
-        document.title = data.titulo + " - Fx-Book";
+        document.title = data.titulo + " - BILLIONAIRE-EBOOKS";
         document.querySelector('meta[name="description"]').setAttribute('content', data.legenda);
         document.getElementById('og-image').setAttribute('content', data.imagem);
         document.getElementById('og-url').setAttribute('content', window.location.href);
