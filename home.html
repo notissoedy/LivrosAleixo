@@ -142,7 +142,11 @@
     livros.forEach(doc => {
       const livro = doc.data();
       swiperContainer.innerHTML += `
-       href="index.html"
+        <div class="swiper-slide">
+          <a href="livro.html?id=${doc.id}&categoria=featured">
+            <img src="${livro.capa}" alt="${livro.titulo}" style="height: 300px;">
+          </a>
+        </div>
       `;
     });
 
@@ -153,7 +157,7 @@
       const post = doc.data();
       blogContainer.innerHTML += `
         <div class="column is-6">
-  <div class="content has-text-light" style="padding: 1rem;">
+  <div class="content has-text-white" style="padding: 1rem;">
     <h3 class="title is-5">${post.titulo}</h3>
     
     <figure class="mb-3">
