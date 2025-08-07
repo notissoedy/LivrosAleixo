@@ -38,12 +38,13 @@
 
     async function carregarLivros() {
       livrosList.innerHTML = "";
-      const categorias = ["featured", "new", "new2"];
+      const categorias = ["featured", "new", "new2","4","5","6"];
       for (const categoria of categorias) {
         const querySnapshot = await getDocs(collection(db, `livros-${categoria}`));
         querySnapshot.forEach((docSnap) => {
           const data = docSnap.data();
           const card = document.createElement("div");
+             const descricaoTexto = data.descricao.replace(/<[^>]+>/g, '').slice(0, 150) + '...';
           card.className = "box";
           card.innerHTML = `
             <article class="media">
@@ -55,16 +56,17 @@
               <div class="media-content">
                 <div class="content">
                   <p>
-                    <strong>${data.titulo}</strong> <small>${data.preco}</small> <br />
-                    ${data.descricao}<br />
+                    <strong>${data.titulo}</strong> <small>Preços: atual-${data.preco} anterior${data.novoPreco}</small> <br />
+                    ${descricaoTexto}<br />
                     ⭐ ${data.estrelas}
                   </p>
-                  <a href="${data.url}" class="button is-small is-link" target="_blank">Comprar</a>
+                  <a href="livro.html?id=${docSnap.id}&categoria=${data.categoria}" class="button is-small is-link" target="_blank">Comprar </a>
+                    <button class="button is-warning is-small" onclick="editarLivro('${categoria}', '${docSnap.id}', ${JSON.stringify(data).replace(/"/g, '&quot;')})">Editar</button>
+                <button class="button is-danger is-small" onclick="excluirLivro('${categoria}', '${docSnap.id}')">Excluir</button>
                 </div>
               </div>
-              <div class="media-right">
-                <button class="button is-warning is-small" onclick="editarLivro('${categoria}', '${docSnap.id}', ${JSON.stringify(data).replace(/"/g, '&quot;')})">Editar</button>
-                <button class="button is-danger is-small" onclick="excluirLivro('${categoria}', '${docSnap.id}')">Excluir</button>
+              <div class="media-down">
+                
               </div>
             </article>
           `;
@@ -96,6 +98,7 @@
       form.idioma.value=data.idioma,
 	    form.isbn.value=data.isbn,
       form.tags.value=data.tags
+      
     };
     window.limpar=function () {
         quill.root.innerHTML="";
@@ -126,7 +129,8 @@
         tamanho: form.tamanho.value,
         idioma: form.idioma.value,
 	      isbn: form.isbn.value,
-        tags: form.tags.value
+        tags: form.tags.value,
+        categoria:form.categoria.value
 
       };
       const categoria = form.categoria.value;
@@ -254,8 +258,8 @@
     <div class="section">
 
   <div class="container">
-    <h1 class="title has-text-centered">Painel Admin - BILLIONAIRE-EBOOKS</h1>
-
+    <h1 class="title has-text-centered">Painel Admin </br> BILLIONAIRE-EBOOKS</h1>
+<h2></h2>
     <form id="uploadForm" class="box">
       <div class=" columns is-12">
   
@@ -320,9 +324,9 @@
                 <option value="featured">Financial Books</option>
                 <option value="new">Best </option>
                 <option value="new2">Fetnes </option>           
-                <option value="colinar">Colinar</option>
-                <option value="history">history</option>
-                <option value="marketing">Marketing</option>
+                <option value="4">Colinar</option>
+                <option value="5">history</option>
+                <option value="6">Marketing</option>
               </select>
             </div>
           </div>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Livros por Categoria | BILLIONAIRE-EBOOKS</title>
+  <meta name="description" content="Explore nossos ebooks por categoria com capas, descrições e vídeos relacionados.">
+  <meta name="keywords" content="ebooks, livros digitais, categorias, vídeos, leitura, BILLIONAIRE-EBOOKS">
+
+  <!-- Estilo e ícones -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      background: linear-gradient(to right, #1f1f2f, #292947);
+      color: #fff;
+    }
+    .navbar {
+      background: #1f1f2f;
+    }
+    .categoria-tabs {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 1.5rem 0;
+    }
+    .categoria-tabs button {
+      border-radius: 20px;
+      background: linear-gradient(135deg, #4e4e70, #6a6a8e);
+      color: #fff;
+      border: none;
+      padding: 0.6em 1.4em;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    .categoria-tabs button:hover {
+      transform: scale(1.05);
+    }
+    .livro-row {
+      display: flex;
+      flex-direction: row;
+      gap: 2rem;
+      margin-bottom: 3rem;
+      animation: fadeInUp 0.6s ease-in-out;
+      flex-wrap: wrap;
+    }
+    .livro-capa img {
+      max-width: 180px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #0005;
+    }
+    .livro-conteudo {
+      flex: 1;
+    }
+    .livro-conteudo h2 {
+      font-size: 1.4rem;
+      margin-bottom: 0.5rem;
+    }
+    .livro-conteudo p {
+      font-size: 0.95rem;
+      color: #ccc;
+    }
+    .livro-botoes {
+      margin-top: 1rem;
+    }
+    .livro-botoes a {
+      border-radius: 50px;
+      padding: 0.5em 1.2em;
+      margin-right: 1rem;
+      text-decoration: none;
+      background: linear-gradient(135deg, #4e4e70, #6a6a8e);
+      color: #fff;
+      transition: background 0.3s ease;
+    }
+    .livro-botoes a.video {
+      background: linear-gradient(135deg, #d54c4c, #933d3d);
+      position: relative;
+    }
+    .livro-botoes a:hover {
+      filter: brightness(1.1);
+    }
+    .tooltip {
+      position: absolute;
+      background: #000;
+      color: #fff;
+      padding: 2px 6px;
+      font-size: 0.75rem;
+      border-radius: 4px;
+      top: -30px;
+      left: 0;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .livro-botoes a.video:hover .tooltip {
+      opacity: 1;
+    }
+
+    @keyframes fadeInUp {
+      from {opacity: 0; transform: translateY(30px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    @media screen and (min-width: 1024px) {
+      .livro-row {
+        flex: 0 0 48%;
+        margin-left: 1%;
+        margin-right: 1%;
+      }
+      #livrosContainer {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+      }
+    }
+  </style>
+</head>
+<body>
+<!-- Navbar -->
+<nav class="navbar is-dark">
+  <div class="navbar-brand">
+    <a class="navbar-item" href="index.html">
+      📚 <strong>BILLIONAIRE-EBOOKS</strong>
+    </a>
+    <a role="button" class="navbar-burger" data-target="navMenu">
+      <span></span><span></span><span></span>
+    </a>
+  </div>
+  <div id="navMenu" class="navbar-menu">
+    <div class="navbar-start">
+      <a class="navbar-item" href="favoritos.html">Favoritos</a>
+      <a class="navbar-item" href="blog.html">Blog</a>
+    </div>
+  </div>
+</nav>
+
+<section class="section">
+  <div class="container">
+    <div class="has-text-centered">
+      <h1 class="title has-text-white">Ebooks por Categoria</h1>
+    </div>
+    <div class="categoria-tabs">
+      <button onclick="carregarLivros('featured')">Financeiro</button>
+      <button onclick="carregarLivros('new')">Populares</button>
+      <button onclick="carregarLivros('new2')">Fitness</button>
+      <button onclick="carregarLivros('4')">Culinária</button>
+      <button onclick="carregarLivros('5')">História</button>
+      <button onclick="carregarLivros('6')">Marketing</button>
+    </div>
+    <div id="livrosContainer"></div>
+  </div>
+</section>
+
+<!-- Firebase e JS -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  const app = initializeApp({
+    apiKey: "AIzaSyBHcbcRZ98WOHEQu9t2qnjLHP9Wvz_ggPs",
+    authDomain: "aleixobook.firebaseapp.com",
+    projectId: "aleixobook",
+    storageBucket: "aleixobook.appspot.com",
+    messagingSenderId: "989202118697",
+    appId: "1:989202118697:web:508c40a7acfbbf80dcc438"
+  });
+
+  const db = getFirestore(app);
+  const container = document.getElementById("livrosContainer");
+
+  async function carregarLivros(categoria) {
+    container.innerHTML = "<p class='has-text-grey-light'>Carregando livros...</p>";
+    const col = collection(db, `livros-${categoria}`);
+    const snapshot = await getDocs(col);
+
+    container.innerHTML = "";
+    snapshot.forEach(doc => {
+      const livro = doc.data();
+      const descricao = livro.descricao.replace(/<[^>]*>?/gm, "").slice(0, 150) + "...";
+      const linha = document.createElement("div");
+      linha.className = "livro-row";
+      linha.innerHTML = `
+        <div class="livro-capa">
+          <img src="${livro.capa}" alt="${livro.titulo}">
+        </div>
+        <div class="livro-conteudo">
+          <h2>${livro.titulo}</h2>
+          <p>${descricao}</p>
+          <div class="livro-botoes">
+            <a href="livro.html?id=${doc.id}&categoria=${categoria}">Ver Mais</a>
+            ${livro.video ? `
+              <a class="video" href="${livro.video}" target="_blank">
+                <i class="fas fa-play"></i> 
+                <span class="tooltip">Assistir vídeo</span>
+              </a>
+            ` : ''}
+          </div>
+        </div>
+      `;
+      container.appendChild(linha);
+    });
+  }
+
+  // Inicializar com categoria padrão
+  carregarLivros('featured');
+</script>
+</body>
+</html>

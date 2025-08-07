@@ -91,7 +91,7 @@
     </div>
   </div>
 </nav>
-  <section class="section">
+  <section id="sectionBook" class="section">
     <div class=" book-details header">
       <div class="columns is-variable is-12 is-flex-direction-column-mobile">
         <!-- Capa -->
@@ -189,6 +189,8 @@
     if (!id || !categoria) {
       alert("Livro não encontrado.");
     } else {
+         const container = document.getElementById("sectionBook");
+        
       const docRef = doc(db, `livros-${categoria}`, id);
       getDoc(docRef).then((docSnap) => {
         if (docSnap.exists()) {

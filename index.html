@@ -41,17 +41,40 @@
     .livro-conteudo {
       flex: 2;
     }
-    .livro-botoes a {
-      margin-right: 10px;
+    .livro-botoes{
+    display: flex;
+      flex-direction: row;
+    }
+   .livro-botoes a {
       border-radius: 50px;
       padding: 0.5em 1.2em;
+      margin-right: 1rem;
+      text-decoration: none;
       background: linear-gradient(135deg, #4e4e70, #6a6a8e);
       color: #fff;
-      border: none;
-      text-decoration: none;
+      transition: background 0.3s ease;
+    }
+    .livro-botoes a.video {
+      background: linear-gradient(135deg, #d54c4c, #933d3d);
+      position: relative;
     }
     .livro-botoes a:hover {
       filter: brightness(1.1);
+    }
+    .tooltip {
+      position: absolute;
+      background: #000;
+      color: #fff;
+      padding: 2px 6px;
+      font-size: 0.75rem;
+      border-radius: 4px;
+      top: -30px;
+      left: 0;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .livro-botoes a.video:hover .tooltip {
+      opacity: 1;
     }
     @media screen and (min-width: 1024px) {
       .livro-linha {
@@ -102,15 +125,16 @@
       <a class="navbar-item" onclick="filtrarCategoria('featured')"> Financial</a>
       <a class="navbar-item" onclick="filtrarCategoria('new')">Best </a>
       <a class="navbar-item" onclick="filtrarCategoria('new2')">Fetnes</a>
-       <a class="navbar-item" onclick="filtrarCategoria('colinary')"> Colinary</a>
-      <a class="navbar-item" onclick="filtrarCategoria('history')">history</a>
-      <a class="navbar-item" onclick="filtrarCategoria('marketing')">Marketing</a>
+       <a class="navbar-item" onclick="filtrarCategoria('4')"> Colinary</a>
+      <a class="navbar-item" onclick="filtrarCategoria('5')">history</a>
+      <a class="navbar-item" onclick="filtrarCategoria('6')">Marketing</a>
     </div>
 
     <div class="navbar-end">
       <div class="navbar-item">
         <span id="user-email" class="mr-2"></span>
         <div class="buttons">
+          <button class="button is-primary" id="adminBtn" >Admin</button>
           <button class="button is-link"  id="blogBtn" >Blog</button>
           <button class="button is-light" id="loginBtn">Login</button>
           <button class="button is-danger is-light" id="logoutBtn" style="display:none;">Logout</button>
@@ -170,8 +194,13 @@
             <h2 class="title is-5 has-text-white">${livro.titulo}</h2>
             <p class="has-text-grey-light">${descricaoTexto}</p>
             <div class="livro-botoes mt-3">
-              <a href="livro.html?id=${doc.id}&categoria=${categoria}">Ver Mais</a>
-              ${livro.video ? `<a href="${livro.video}" target="_blank">Vídeo</a>` : ''}
+              <a class=""   href="livro.html?id=${doc.id}&categoria=${categoria}">Ver Mais</a>
+                ${livro.video ? `
+              <a class="video" href="${livro.video}" target="_blank">
+                <i class="fas fa-play"></i> 
+                <span class="tooltip">Assistir vídeo</span>
+              </a>
+            ` : ''}
             </div>
           </div>
         `;
@@ -190,6 +219,8 @@
   const loginBtn = document.getElementById("loginBtn");
   const logoutBtn = document.getElementById("logoutBtn");
   const userEmail = document.getElementById("user-email");
+  const adminBtn= document.getElementById("adminBtn");
+  const adminEmails = ["notissoedy@gmail.com", "notissoedydev2@gmail.com", "aleixoaleixoalfredo9@gmail.com"];
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -204,6 +235,13 @@
       logoutBtn.style.display = "none";
       userEmail.textContent = "";
     }
+
+    if (user && adminEmails.includes(user.email)) {
+       adminBtn.style.display = "inline-block";
+    } else {
+       adminBtn.style.display = "none";
+    }
+
   });
 
   loginBtn.onclick = () => {
@@ -217,7 +255,9 @@
   blogBtn.onclick = () => {
      window.location="blog.html";
   };
-
+   adminBtn.onclick = () => {
+     window.location="admin.html";
+  };
  
 </script>
 </body>
