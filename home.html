@@ -58,7 +58,7 @@
     <div class="has-text-centered">
       <h1 class="title is-1">BILLIONAIRE-EBOOKS</h1>
       <p class="subtitle">Seu portal de leitura, conhecimento e oportunidades</p>
-      <a href="#sobre" class="button is-medium is-primary mt-5">Comece agora</a>
+      <a href="index.html" class="button is-medium is-primary mt-5">Comece agora</a>
     </div>
   </section>
 
@@ -142,11 +142,7 @@
     livros.forEach(doc => {
       const livro = doc.data();
       swiperContainer.innerHTML += `
-        <div class="swiper-slide">
-          <a href="livro.html?id=${doc.id}&categoria=featured">
-            <img src="${livro.capa}" alt="${livro.titulo}" style="height: 300px;">
-          </a>
-        </div>
+       href="index.html"
       `;
     });
 
@@ -156,14 +152,29 @@
     posts.forEach(doc => {
       const post = doc.data();
       blogContainer.innerHTML += `
-        <div class="column is-4">
-          <div class="box  has-text-light">
-            <h3 class="title is-5">${post.titulo}</h3>
-               <img src="${post.imagem}" alt="${post.imagem}" style="height: 200px;">
-           <div class="mt-2">${post.conteudo ? post.conteudo.slice(0, 300) : 'Conteúdo não disponível'}...</div>
-            <a class="button is-small is-info mt-2" href="post.html?id=${doc.id}&titulo=${encodeURIComponent(post.titulo.toLowerCase().replaceAll(' ', '-'))}">Ler mais</a>
-          </div>
-        </div>
+        <div class="column is-6">
+  <div class="content has-text-light" style="padding: 1rem;">
+    <h3 class="title is-5">${post.titulo}</h3>
+    
+    <figure class="mb-3">
+      <img 
+        src="${post.imagem}" 
+        alt="${post.titulo}" 
+        style="max-height: 220px; width: 100%; object-fit: cover; border-radius: 12px;"
+      >
+    </figure>
+    
+    <p class="is-size-6">${post.conteudo ? post.conteudo.slice(0, 300) : 'Conteúdo não disponível'}...</p>
+    
+    <a 
+      class="button mt-3"
+      style="border-radius: 30px; background: linear-gradient(to right, #00c6ff, #0072ff); color: white; border: none;"
+      href="post.html?id=${doc.id}&titulo=${encodeURIComponent(post.titulo.toLowerCase().replaceAll(' ', '-'))}"
+    >
+      Ler mais
+    </a>
+  </div>
+</div>
       `;
     });
   </script>

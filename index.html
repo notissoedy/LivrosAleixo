@@ -17,6 +17,31 @@
     .navbar {
       background: #292944;
     }
+
+    
+    .navbar {
+      background: #1f1f2f;
+    }
+    .categoria-tabs {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 1.5rem 0;
+    }
+    .categoria-tabs button {
+      border-radius: 20px;
+      background: linear-gradient(135deg, #4e4e70, #6a6a8e);
+      color: #fff;
+      border: none;
+      padding: 0.6em 1.4em;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    .categoria-tabs button:hover {
+      transform: scale(1.05);
+    }
+
     .categoria-menu {
       display: flex;
       flex-wrap: wrap;
@@ -122,12 +147,8 @@
 
   <div id="navbarMenu"  class="navbar-menu ">
     <div class="navbar-start ">
-      <a class="navbar-item" onclick="filtrarCategoria('featured')"> Financial</a>
-      <a class="navbar-item" onclick="filtrarCategoria('new')">Best </a>
-      <a class="navbar-item" onclick="filtrarCategoria('new2')">Fetnes</a>
-       <a class="navbar-item" onclick="filtrarCategoria('4')"> Colinary</a>
-      <a class="navbar-item" onclick="filtrarCategoria('5')">history</a>
-      <a class="navbar-item" onclick="filtrarCategoria('6')">Marketing</a>
+      <a class="navbar-item" href="home.html">Home</a>
+   
     </div>
 
     <div class="navbar-end">
@@ -144,19 +165,22 @@
   </div>
 </nav>
 
-  <section class="section">
-    <div class="container">
-      <h1 class="title has-text-white">Explore Ebooks</h1>
-
-      <!-- <div class="categoria-menu">
-        <button class="button is-info" onclick="filtrarCategoria('featured')">Destaques</button>
-        <button class="button is-success" onclick="filtrarCategoria('new')">Novos</button>
-        <button class="button is-warning" onclick="filtrarCategoria('new2')">Novos 2</button>
-      </div> -->
-
-      <div id="livrosContainer"></div>
+ <section class="section">
+  <div class="container">
+    <div class="has-text-centered">
+      <h1 class="title has-text-white">Ebooks por Categoria</h1>
     </div>
-  </section>
+    <div class="categoria-tabs">
+      <button onclick="filtrarCategoria('featured')">Financeiro</button>
+      <button onclick="filtrarCategoria('new')">Populares</button>
+      <button onclick="filtrarCategoria('new2')">Fitness</button>
+      <button onclick="filtrarCategoria('4')">Culinária</button>
+      <button onclick="filtrarCategoria('5')">História</button>
+      <button onclick="filtrarCategoria('6')">Marketing</button>
+    </div>
+    <div id="livrosContainer"></div>
+  </div>
+</section>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
