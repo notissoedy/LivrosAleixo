@@ -142,11 +142,21 @@
     livros.forEach(doc => {
       const livro = doc.data();
       swiperContainer.innerHTML += `
-        <div class="swiper-slide">
-          <a href="livro.html?id=${doc.id}&categoria=featured">
-            <img src="${livro.capa}" alt="${livro.titulo}" style="height: 300px;">
-          </a>
-        </div>
+       <div class="swiper-slide">
+  <a href="livro.html?id=${doc.id}&categoria=featured" style="display: block; width: 100%;">
+    <img 
+      src="${livro.capa}" 
+      alt="${livro.titulo}" 
+      style="
+        width: 100%;
+        height: auto;
+        max-height: 300px;
+        object-fit: cover;
+        border-radius: 10px;
+      "
+    >
+  </a>
+</div>
       `;
     });
 
