@@ -211,14 +211,14 @@
  <section class="section">
   <div class="container">
     <div class="has-text-centered">
-      <h1 class="title has-text-white">Ebooks por Categoria</h1>
+      <h1 class="title has-text-white">Ebooks by Category</h1>
     </div>
     <div class="categoria-tabs">
-      <button onclick="filtrarCategoria('featured')">Financeiro</button>
-      <button onclick="filtrarCategoria('new')">Populares</button>
+      <button onclick="filtrarCategoria('featured')">Financial</button>
+      <button onclick="filtrarCategoria('new')">Popular</button>
       <button onclick="filtrarCategoria('new2')">Fitness</button>
-      <button onclick="filtrarCategoria('4')">Culinária</button>
-      <button onclick="filtrarCategoria('5')">História</button>
+      <button onclick="filtrarCategoria('4')">Culinary</button>
+      <button onclick="filtrarCategoria('5')">History</button>
       <button onclick="filtrarCategoria('6')">Marketing</button>
     </div>
     <div id="livrosContainer"></div>
@@ -243,7 +243,7 @@
 
     async function carregarLivros(categoria) {
       const container = document.getElementById("livrosContainer");
-      container.innerHTML = "<p class='has-text-light'>Carregando...</p>";
+      container.innerHTML = "<p class='has-text-light'>Loading...</p>";
       const col = collection(db, `livros-${categoria}`);
       const snapshot = await getDocs(col);
 
@@ -261,11 +261,11 @@
             <h2 class="title is-5 has-text-white">${livro.titulo}</h2>
             <p class="has-text-grey-light">${descricaoTexto}</p>
             <div class="livro-botoes mt-3">
-              <a class=""   href="livro.html?id=${doc.id}&categoria=${categoria}">Ver Mais</a>
+              <a class=""   href="livro.html?id=${doc.id}&categoria=${categoria}">See More</a>
                 ${livro.video ? `
               <a class="video" href="${livro.video}" target="_blank">
                 <i class="fas fa-play"></i> 
-                <span class="tooltip">Assistir vídeo</span>
+                <span class="tooltip">Watch video</span>
               </a>
             ` : ''}
             </div>

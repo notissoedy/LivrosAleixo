@@ -152,17 +152,18 @@
       <div class="field has-addons search-bar">
         <div class="control is-expanded">
           <input id="searchInput" class="input" type="text"
-            placeholder="Buscar por título, categoria ou palavra-chave...">
+            placeholder="
+            Search by title, category or keyword..">
         </div>
         <div class="control">
-          <button id="searchBtn" class="button is-link">Buscar</button>
+          <button id="searchBtn" class="button is-link">Search</button>
         </div>
       </div>
 
-      <h2 class="title is-4">Artigo em destaque</h2>
+      <h2 class="title is-4">Featured article</h2>
       <div id="artigoPrincipal" class="box blog-post"></div>
 
-      <h2 class="title is-4 mt-6">Artigos relacionados</h2>
+      <h2 class="title is-4 mt-6">Related articles</h2>
       <div id="artigosRelacionados" class="columns is-multiline"></div>
     </div>
   </section>
@@ -219,14 +220,14 @@
         <article>
           <h2 class="title is-4">${principal.titulo}</h2>
           <figure>
-            <img src="${principal.imagem}" alt="Imagem de capa" class="image-preview">
+            <img src="${principal.imagem}" alt="Cover image" class="image-preview">
             <figcaption class="has-text-grey">${principal.legenda}</figcaption>
           </figure>
-          <p class="is-size-7"><strong>Categoria:</strong> ${principal.categoria}</p>
-          <p class="is-size-7"><strong>Palavras-chave:</strong> ${principal.palavrasChave}</p>
+          <p class="is-size-7"><strong>Category:</strong> ${principal.categoria}</p>
+          <p class="is-size-7"><strong>Keywords:</strong> ${principal.palavrasChave}</p>
           <div class="mt-2">${principal.conteudo.slice(0, 300)}...</div>
-          <a class="button is-link is-small mt-3" href="post.html?id=${principal.id}&titulo=${slugify(principal.titulo)}">Ler mais</a>
-        </article>` : '<p>Nenhum post encontrado.</p>';
+          <a class="button is-link is-small mt-3" href="post.html?id=${principal.id}&titulo=${slugify(principal.titulo)}">Read more</a>
+        </article>` : '<p>No posts found.</p>';
 
       containerRelacionados.innerHTML = "";
       posts.slice(1, 5).forEach(post => {
@@ -240,7 +241,7 @@
             </figure>
             <p class="is-size-7 has-text-grey">${post.legenda}</p>
             <p class="is-size-7">Categoria: ${post.categoria}</p>
-            <a href="post.html?id=${post.id}&titulo=${slugify(post.titulo)}" class="button is-small is-link mt-2">Ver detalhes</a>
+            <a href="post.html?id=${post.id}&titulo=${slugify(post.titulo)}" class="button is-small is-link mt-2">View details</a>
           </div>
         `;
         containerRelacionados.appendChild(col);
@@ -286,7 +287,7 @@
 
     loginBtn.onclick = () => {
       const provider = new GoogleAuthProvider();
-      signInWithPopup(auth, provider).catch((error) => alert("Erro no login: " + error.message));
+      signInWithPopup(auth, provider).catch((error) => alert("Login error: " + error.message));
     };
 
     logoutBtn.onclick = () => {

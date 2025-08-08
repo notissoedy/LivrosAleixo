@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title id="livroTitulo1">Nome do Livro | BILLIONAIRE-EBOOKS</title>
+  <title id="livroTitulo1">Book Name | BILLIONAIRE-EBOOKS</title>
   <meta name="description"
     content="Veja detalhes completos sobre o livro Nome do Livro, incluindo autor, ano, preço, formato e muito mais.">
   <meta name="keywords" content="livro, autor, ISBN, formato, descrição, comprar, BILLIONAIRE-EBOOKS">
@@ -162,7 +162,7 @@
 
         <!-- Detalhes -->
         <div class="column is-3">
-          <h1 class="title" id="livroTitulo">Título do Livro</h1>
+          <h1 class="title" id="livroTitulo">Title of the Book</h1>
           <div id="star" class="star-rating mb-3">
             <i class="fas fa-star"></i>
             <i class="fas fa-star"></i>
@@ -171,12 +171,12 @@
             <i class="far fa-star"></i>
           </div>
 
-          <p><strong><i class="fas fa-user"></i> Autor:</strong> <span id="autor">...</span></p>
+          <p><strong><i class="fas fa-user"></i> Author:</strong> <span id="autor">...</span></p>
           <p><strong><i class="fas fa-building"></i> Publisher:</strong> <span id="editora">...</span></p>
-          <p><strong><i class="fas fa-calendar-alt"></i> Ano:</strong> <span id="ano">...</span></p>
-          <p><strong><i class="fas fa-book"></i> Formato:</strong> <span id="formato">...</span></p>
-          <p><strong><i class="fas fa-building"></i> Tamanho:</strong> <span id="tamanho">...</span></p>
-          <p><strong><i class="fas fa-language"></i> Idioma:</strong> <span id="idioma">...</span></p>
+          <p><strong><i class="fas fa-calendar-alt"></i> Year:</strong> <span id="ano">...</span></p>
+          <p><strong><i class="fas fa-book"></i>Format:</strong> <span id="formato">...</span></p>
+          <p><strong><i class="fas fa-building"></i> Size:</strong> <span id="tamanho">...</span></p>
+          <p><strong><i class="fas fa-language"></i> Language:</strong> <span id="idioma">...</span></p>
           <p><strong><i class="fas fa-barcode"></i> ISBN:</strong> <span id="isbn">...</span></p>
           <p id="youtube" style="display: none;"><strong><i class="fas fa-video"></i> Video:</strong> <span ><a>Ver no Youtube</a></span></p>
           <div id="precoContainer" class="mt-4">
@@ -192,8 +192,8 @@
             </div>
           </div>
             <div id="divComprar">
-              <a id="payhip" href="" class=" is-primary mt-4 payhip-buy-button" data-theme="green" data-product=""><i class="fas fa-cart-plus mr-2"></i> Comprar Agora</a>
-              <a id="loginbtn" onclick="login()" style="display: none;" class="button is-primary mt-4" ><i class="fas fa-cart-plus mr-2"></i> Comprar Agora</a>
+              <a id="payhip" href="" class=" is-primary mt-4 payhip-buy-button" data-theme="green" data-product=""><i class="fas fa-cart-plus mr-2"></i>Buy Now</a>
+              <a id="loginbtn" onclick="login()" style="display: none;" class="button is-primary mt-4" ><i class="fas fa-cart-plus mr-2"></i> Buy Now</a>
               
             </div>
            
@@ -206,7 +206,7 @@
         </div>
 
         <div class=" column is-5 description ">
-          <h2 class="title is-4">Descrição do Livro</h2>
+          <h2 class="title is-4">Book Description</h2>
           <div id="livroDescricao">
            ....
          </div>
@@ -246,7 +246,7 @@
     const categoria = params.get("categoria");
 
     if (!id || !categoria) {
-      alert("Livro não encontrado.");
+      alert("Book not found.");
     } else {
          const container = document.getElementById("sectionBook");
         
@@ -328,11 +328,11 @@
           }
 
         } else {
-          alert("Livro não encontrado.");
+          alert("Book not found.");
         }
       }).catch((error) => {
-        console.error("Erro ao buscar livro:", error);
-        alert("Erro ao carregar livro.");
+        console.error("Error while searching for book:", error);
+        alert("Error while searching for book.");
       });
 
 
@@ -340,7 +340,7 @@
 
                // 🔐 Função de login
       const login = async (event) => {
-         alert("Login realizado com sucesso!");
+         alert("Login successful!");
         // event.preventDefault(); // evita recarregar página
 
         // const email = document.getElementById("loginEmail").value.trim();
@@ -405,7 +405,7 @@
 
   loginBtn.onclick = () => {
     const provider = new GoogleAuthProvider();
-    signInWithPopup(auth, provider).catch((error) => alert("Erro no login: " + error.message));
+    signInWithPopup(auth, provider).catch((error) => alert("Login error: " + error.message));
   };
 
   logoutBtn.onclick = () => {
