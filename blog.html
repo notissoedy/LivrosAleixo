@@ -1,20 +1,22 @@
 <!DOCTYPE html>
 <html lang="pt">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>BLOG - BILLIONAIRE-EBOOKS</title>
-  <meta name="description" content="Explore artigos incríveis sobre livros, educação, leitura e desenvolvimento pessoal no blog BILLIONAIRE-EBOOKS" />
+  <meta name="description"
+    content="Explore artigos incríveis sobre livros, educação, leitura e desenvolvimento pessoal no blog BILLIONAIRE-EBOOKS" />
   <meta name="keywords" content="blog, livros, leitura, desenvolvimento pessoal, educação, BILLIONAIRE-EBOOKS">
   <meta name="author" content="BILLIONAIRE-EBOOKS">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-<link rel="manifest" href="site.webmanifest">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="manifest" href="site.webmanifest">
   <style>
     body {
-  background: linear-gradient(to right, #1e1e2f, #2a2a40);
+      background: linear-gradient(to right, #1e1e2f, #2a2a40);
       color: #f0f0f0;
     }
 
@@ -50,63 +52,106 @@
       color: #aaa !important;
     }
   </style>
-  <script>
-  // Ativa o menu mobile
-  document.addEventListener("DOMContentLoaded", () => {
-    const $navbarBurgers = Array.from(document.querySelectorAll(".navbar-burger"));
 
-    $navbarBurgers.forEach(el => {
-      el.addEventListener("click", () => {
-        const target = document.getElementById(el.dataset.target);
-        el.classList.toggle("is-active");
-        target.classList.toggle("is-active");
+<style>
+  body,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  span,
+  a,
+  li,
+  label,
+  input,
+  button,
+  strong,
+  em,
+  figcaption {
+    color: #f0f0f0 !important;
+  }
+
+  a.navbar-item,
+  .navbar-item,
+  .navbar-link {
+    color: #f0f0f0 !important;
+  }
+
+  input::placeholder {
+    color: #ccc !important;
+  }
+
+  .box {
+    border: 1px solid #444;
+    /* antes estava muito escura */
+  }
+
+  .navbar-menu,.navbar { background-color:  #2a2a2a !important; }
+</style>
+
+  <script>
+    // Ativa o menu mobile
+    document.addEventListener("DOMContentLoaded", () => {
+      const $navbarBurgers = Array.from(document.querySelectorAll(".navbar-burger"));
+
+      $navbarBurgers.forEach(el => {
+        el.addEventListener("click", () => {
+          const target = document.getElementById(el.dataset.target);
+          el.classList.toggle("is-active");
+          target.classList.toggle("is-active");
+        });
       });
     });
-  });
-</script>
+  </script>
+
+
 </head>
+
 <body>
-<!-- Navbar -->
-<nav class="navbar is-dark" role="navigation" aria-label="main navigation">
-  <div class="navbar-brand">
-    <a class="navbar-item" href="index.html">
-      📚 <strong>BILLIONAIRE-EBOOKS</strong>
-    </a>
+  <!-- Navbar -->
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="index.html">
+        📚 <strong>BILLIONAIRE-EBOOKS</strong>
+      </a>
 
-    <!-- Botão hamburguer (mobile) -->
-    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarMenu">
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-    </a>
-  </div>
-
-  <div id="navbarMenu" class="navbar-menu">
-    <div class="navbar-start">
-      <a class="navbar-item" href="favoritos.html">Favoritos </a>
-      <a class="navbar-item" href="blog.html">Blog</a>
+      <!-- Botão hamburguer (mobile) -->
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarMenu">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
     </div>
 
-    <div class="navbar-end">
-      <div class="navbar-item">
-        <span id="user-email" class="mr-2"></span>
-        <div class="buttons">
-          <button class="button is-light" id="loginBtn">Login</button>
-          <button class="button is-danger is-light" id="logoutBtn" style="display:none;">Logout</button>
+    <div id="navbarMenu" class="navbar-menu">
+      <div class="navbar-start">
+        <a class="navbar-item" href="blog.html">Blog</a>
+      </div>
+
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span id="user-email" class="mr-2"></span>
+          <div class="buttons">
+            <button class="button is-link" id="loginBtn">Login</button>
+            <button class="button is-danger is-light" id="logoutBtn" style="display:none;">Logout</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</nav>
+  </nav>
 
 
   <section class="section">
     <div class="container">
-      <h1 class="title is-3 has-text-centered ">BLOG <br/> BILLIONAIRE-EBOOKS</h1>
+      <h1 class="title is-3 has-text-centered ">BLOG <br /> BILLIONAIRE-EBOOKS</h1>
 
       <div class="field has-addons search-bar">
         <div class="control is-expanded">
-          <input id="searchInput" class="input" type="text" placeholder="Buscar por título, categoria ou palavra-chave...">
+          <input id="searchInput" class="input" type="text"
+            placeholder="Buscar por título, categoria ou palavra-chave...">
         </div>
         <div class="control">
           <button id="searchBtn" class="button is-link">Buscar</button>
@@ -215,37 +260,38 @@
 
     carregarPosts();
 
-  import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-  const auth = getAuth(app);
+    const auth = getAuth(app);
 
-  const loginBtn = document.getElementById("loginBtn");
-  const logoutBtn = document.getElementById("logoutBtn");
-  const userEmail = document.getElementById("user-email");
+    const loginBtn = document.getElementById("loginBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const userEmail = document.getElementById("user-email");
 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
 
-      loginBtn.style.display = "none";
-      logoutBtn.style.display = "inline-block";
-      userEmail.textContent = user.email;
-    } else {
+        loginBtn.style.display = "none";
+        logoutBtn.style.display = "inline-block";
+        userEmail.textContent = user.email;
+      } else {
 
-      
-      loginBtn.style.display = "inline-block";
-      logoutBtn.style.display = "none";
-      userEmail.textContent = "";
-    }
-  });
 
-  loginBtn.onclick = () => {
-    const provider = new GoogleAuthProvider();
-    signInWithPopup(auth, provider).catch((error) => alert("Erro no login: " + error.message));
-  };
+        loginBtn.style.display = "inline-block";
+        logoutBtn.style.display = "none";
+        userEmail.textContent = "";
+      }
+    });
 
-  logoutBtn.onclick = () => {
-    signOut(auth).then(() => location.reload());
-  };
-</script>
+    loginBtn.onclick = () => {
+      const provider = new GoogleAuthProvider();
+      signInWithPopup(auth, provider).catch((error) => alert("Erro no login: " + error.message));
+    };
+
+    logoutBtn.onclick = () => {
+      signOut(auth).then(() => location.reload());
+    };
+  </script>
 </body>
+
 </html>

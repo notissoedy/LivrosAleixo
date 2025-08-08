@@ -117,6 +117,44 @@
     }
   </style>
 
+<style>
+  body,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  span,
+  a,
+  li,
+  label,
+  input,
+  button,
+  strong,
+  em,
+  figcaption {
+    color: #f0f0f0 !important;
+  }
+
+  a.navbar-item,
+  .navbar-item,
+  .navbar-link {
+    color: #f0f0f0 !important;
+  }
+
+  input::placeholder {
+    color: #ccc !important;
+  }
+
+  .box {
+    border: 1px solid #444;
+    /* antes estava muito escura */
+  }
+
+  .navbar-menu,.navbar { background-color:  #2a2a2a !important; }
+</style>
   <script>
   // Ativa o menu mobile
   document.addEventListener("DOMContentLoaded", () => {
@@ -160,8 +198,8 @@
         <span id="user-email" class="mr-2"></span>
         <div class="buttons">
           <button class="button is-primary" id="adminBtn" >Admin</button>
-          <button class="button is-link"  id="blogBtn" >Blog</button>
-          <button class="button is-light" id="loginBtn">Login</button>
+          <button class="button is-success"  id="blogBtn" >Blog</button>
+          <button class="button is-link" id="loginBtn">Login</button>
           <button class="button is-danger is-light" id="logoutBtn" style="display:none;">Logout</button>
         </div>
       </div>
