@@ -144,7 +144,7 @@
         <span id="user-email" class="mr-2"></span>
         <div class="buttons">
           <button class="button is-link" id="loginBtn">Login</button>
-          <button class="button is-danger is-light" id="logoutBtn" style="display:none;">Logout</button>
+          <button class="button is-danger " id="logoutBtn" style="display:none;">Logout</button>
         </div>
       </div>
     </div>
@@ -277,12 +277,10 @@
           preco.innerHTML = `${livro.preco}MT <span class="is-size-5 has-text-grey-light has-text-line-through ml-2">${livro.novoPreco}MT</span>`;
           precoContainer.appendChild(preco);
 
-
-
           const tags = livro.tags;
           const tagArray = tags.split(',');
 
-          const colors = ["is-info", "is-success", "is-warning", "is-primary", "is-danger"];
+          const colors = ["is-info", "is-success", "is-primary", "is-danger", "is-warning"];
           const tagsContainer = document.getElementById("tags");
 
           tagArray.forEach((tag, index) => {
