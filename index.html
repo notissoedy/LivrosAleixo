@@ -255,7 +255,9 @@
         const descricaoTexto = livro.descricao.replace(/<[^>]+>/g, '').slice(0, 150) + '...';
         linha.innerHTML = `
           <div class="livro-capa">
-            <img src="${livro.capa}" alt="${livro.titulo}" style="max-width: 100%; border-radius: 8px;" />
+             <a href="livro.html?id=${doc.id}&categoria=${categoria}">
+                <img src="${livro.capa}" alt="${livro.titulo}" style="max-width: 100%; border-radius: 8px;" />
+              </a>
           </div>
           <div class="livro-conteudo">
             <h2 class="title is-5 has-text-white">${livro.titulo}</h2>
