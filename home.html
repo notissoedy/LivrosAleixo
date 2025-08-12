@@ -216,11 +216,14 @@
     <h3 class="title is-5">${post.titulo}</h3>
     
     <figure class="mb-3">
-      <img 
+      <a href="post.html?id=${doc.id}&titulo=${encodeURIComponent(post.titulo.toLowerCase().replaceAll(' ', '-'))}">
+        <img 
         src="${post.imagem}" 
         alt="${post.titulo}" 
         style="max-height: 220px; width: 100%; object-fit: cover; border-radius: 12px;"
-      >
+        >
+      </a>
+
     </figure>
     
     <p class="is-size-6">${post.conteudo ? post.conteudo.slice(0, 300) : 'Content not available'}...</p>

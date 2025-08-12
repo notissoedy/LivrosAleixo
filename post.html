@@ -331,7 +331,7 @@ import { serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/fire
         col.innerHTML = `
           <div class="box">
             <h3 class="title is-6">${post.titulo}</h3>
-            <figure><img src="${post.imagem}" alt="" style="max-width: 100%; height: auto;"></figure>
+            <figure><a href=""post.html?id=${post.id}&titulo=${slug}""><img src="${post.imagem}" alt="" style="max-width: 100%; height: auto;"></a></figure>
             <p class="is-size-7">${post.categoria}</p>
             <a class="button is-small is-link mt-2" href="post.html?id=${post.id}&titulo=${slug}">Ver mais</a>
           </div>
