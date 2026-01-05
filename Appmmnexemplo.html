@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="pt-MZ">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ganhar Dinheiro Online MZ</title>
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --primary: #2E8B57;
+  --secondary: #FFD700;
+  --bg: #f9f9f9;
+  --dark: #1f2933;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--dark);
+  font-size: 16px;
+}
+
+/* UTIL */
+.hidden { display: none; }
+.fade { animation: fade 0.6s ease; }
+@keyframes fade { from {opacity:0} to {opacity:1} }
+
+/* BUTTONS */
+button {
+  width: 100%;
+  padding: 14px;
+  border-radius: 10px;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform .2s, box-shadow .2s;
+}
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,0,0,.12);
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+}
+
+.btn-secondary {
+  background: var(--secondary);
+  color: #000;
+}
+
+/* SPLASH */
+#splash {
+  height: 100vh;
+  background: linear-gradient(135deg, #2E8B57, #3CB371);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+#splash h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+#splash p {
+  opacity: .9;
+  text-align: center;
+  padding: 0 20px;
+}
+
+/* CONTAINER */
+.container {
+  padding: 20px;
+  max-width: 720px;
+  margin: auto;
+}
+
+/* CARDS */
+.card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.06);
+}
+
+/* HEADER */
+.header {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+/* INPUT */
+input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+/* PROGRESS */
+.progress {
+  background: #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+  height: 10px;
+}
+.progress div {
+  height: 100%;
+  background: var(--primary);
+}
+
+/* FLOAT BUTTON */
+.fab {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: var(--secondary);
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  font-size: 28px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- SPLASH -->
+<section id="splash" class="fade">
+  <h1>💰 Ganhar Dinheiro Online MZ</h1>
+  <p>Aprenda a ganhar dinheiro online com seu celular</p>
+</section>
+
+<!-- LANDING -->
+<section id="landing" class="container hidden fade">
+  <div class="header">Bem-vindo 👋</div>
+  <p>Aprenda passo a passo como gerar renda online usando apenas o seu telemóvel.</p>
+
+  <button class="btn-primary" onclick="show('login')">Começar Grátis</button>
+  <br><br>
+  <button class="btn-secondary" onclick="show('login')">Entrar</button>
+
+  <div class="card">
+    📘 <b>Módulo 0:</b> Boas-vindas  
+    <p>Introdução e mentalidade digital</p>
+  </div>
+  <div class="card">
+    🌐 <b>Módulo 1:</b> Base Digital  
+    <p>Internet, apps e oportunidades reais</p>
+  </div>
+
+  <footer style="margin-top:20px;font-size:14px;">
+    Termos • Política de Privacidade
+  </footer>
+</section>
+
+<!-- LOGIN -->
+<section id="login" class="container hidden fade">
+  <div class="header">Criar Conta / Entrar</div>
+  <input placeholder="Nome" />
+  <input placeholder="WhatsApp" />
+  <input type="password" placeholder="Senha" />
+
+  <button class="btn-primary" onclick="show('modules')">Entrar</button>
+  <br><br>
+  <button class="btn-secondary">Continuar como convidado</button>
+</section>
+
+<!-- MODULES -->
+<section id="modules" class="container hidden fade">
+  <div class="header">📚 Módulos</div>
+
+  <div class="progress">
+    <div style="width:25%"></div>
+  </div>
+  <small>Progresso: 25%</small>
+
+  <div class="card" onclick="show('lesson')">
+    👋 Módulo 0 – Boas-vindas  
+    <p>3 aulas</p>
+  </div>
+
+  <div class="card">
+    📱 Módulo 1 – Base Digital  
+    <p>5 aulas</p>
+  </div>
+
+  <button class="fab">▶</button>
+</section>
+
+<!-- LESSON -->
+<section id="lesson" class="container hidden fade">
+  <div class="header">📘 Aula: Introdução</div>
+
+  <p>
+    Bem-vindo ao curso! Aqui você aprenderá como usar seu celular
+    para criar oportunidades reais de renda online.
+  </p>
+
+  <div class="card">🎥 Vídeo explicativo</div>
+
+  <button class="btn-primary">✔ Marcar como concluída</button>
+  <br><br>
+  <button class="btn-secondary">➡ Próxima Aula</button>
+</section>
+
+<!-- PREMIUM -->
+<section id="premium" class="container hidden fade">
+  <div class="header">🔓 Conteúdo Premium</div>
+
+  <ul>
+    <li>Afiliados</li>
+    <li>MMN ético</li>
+    <li>Tráfego pago</li>
+    <li>Criar produto digital</li>
+  </ul>
+
+  <h2>🔥 Apenas 1.500 MT</h2>
+
+  <button class="btn-primary">Desbloquear</button>
+</section>
+
+<!-- DASHBOARD -->
+<section id="dashboard" class="container hidden fade">
+  <div class="header">📊 Ganhos</div>
+
+  <div class="card">
+    💵 Total: <b>0 MT</b>
+  </div>
+
+  <button class="btn-primary">Retirar Ganhos</button>
+</section>
+
+<!-- SETTINGS -->
+<section id="settings" class="container hidden fade">
+  <div class="header">⚙ Configurações</div>
+
+  <input placeholder="Nome" />
+  <input placeholder="WhatsApp" />
+  <input type="password" placeholder="Senha" />
+
+  <button class="btn-secondary">Sair</button>
+</section>
+
+<script>
+function show(id) {
+  document.querySelectorAll("section").forEach(s => s.classList.add("hidden"));
+  document.getElementById(id).classList.remove("hidden");
+}
+
+// SPLASH AUTO
+setTimeout(() => {
+  show('landing');
+}, 2500);
+</script>
+
+</body>
+</html>
